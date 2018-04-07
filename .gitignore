@@ -1,3 +1,16 @@
+# Project specific
+db.sqlite3
+media/*
+!media/artist
+media/artist/*
+!media/artist/default.jpg
+!media/event/
+media/event/*
+!media/event/default.jpg
+
+# JS
+node_modules
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

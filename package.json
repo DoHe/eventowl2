@@ -1,0 +1,46 @@
+{
+  "name": "eventowl",
+  "version": "1.0.0",
+  "description": "Eventowl",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t vueify -e concertowl/js/index.js -o concertowl/static/bundle.js && node-sass --recursive concertowl/sass/ --output concertowl/static/",
+    "watch": "watchify -t vueify -e concertowl/js/index.js -o concertowl/static/bundle.js & node-sass --recursive --watch concertowl/sass --output concertowl/static/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DoHe/eventowl2.git"
+  },
+  "author": "DoHe",
+  "homepage": "https://github.com/DoHe/eventowl2#readme",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.1.1",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-vue": "^4.4.0",
+    "eslint_d": "^5.2.2",
+    "node-sass": "^4.8.3",
+    "vueify": "^9.4.1",
+    "watchify": "^3.11.0"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "dependencies": {
+    "bulma": "^0.6.2",
+    "vue": "^2.5.16"
+  },
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
+  }
+}

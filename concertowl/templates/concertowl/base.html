@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head><title>EventOwl</title>
+    <meta name="description"
+          content="The one stop solution to find everything that is fun around you. Including concerts in your city!"/>
+    <meta name="keywords" content="concerts,artists,fun,city,events"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+
+    <script src="{% static 'bundle.js' %}"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+    {% block extra_header %}
+    {% endblock %}
+</head>
+
+<body>
+{% block content %}
+{% endblock %}
+</body>
+</html>
