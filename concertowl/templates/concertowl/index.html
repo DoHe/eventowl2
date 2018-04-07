@@ -18,14 +18,16 @@
                                 <div class="content">
                                     <p><strong>{{ event.artists.first }}</strong></p>
                                     <p>{{ event.date_time}} at {{ event.venue }}</p>
+                                    <p>Buy your ticket <a href="{{ event.ticket_url }}">here</a>
+                                    <p>
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p>No events available</p>
-            {% endif %}
-        </div>
-    </section>
-{% endblock content %}
+                            </article>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No events available</p>
+                {% endif %}
+            </div>
+        </section>
+    {% endblock content %}
