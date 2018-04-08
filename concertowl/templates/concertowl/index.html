@@ -3,31 +3,8 @@
     <section class="section">
         <div class="container">
             <h1 class="title">
-            All the events of your favorite artists!
+            Welcome
             </h1>
-            {% if events %}
-                {% for event in events %}
-                    <div class="box">
-                        <article class="media">
-                            <figure class="media-left">
-                                <p class="image is-96x96">
-                                    <img src="{{ event.picture.url }}">
-                                </p>
-                            </figure>
-                            <div class="media-content">
-                                <div class="content">
-                                    <p><strong>{{ event.artists.first }}</strong></p>
-                                    <p>{{ event.date_time}} at {{ event.venue }}</p>
-                                    <p>Buy your ticket <a href="{{ event.ticket_url }}">here</a>
-                                    <p>
-                                    </div>
-                                </div>
-                            </article>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p>No events available</p>
-                {% endif %}
-            </div>
-        </section>
-    {% endblock content %}
+        </div>
+    </section>
+{% endblock content %}

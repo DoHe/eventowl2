@@ -10,7 +10,7 @@
 		<link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
 		<link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
 		<link rel="manifest" href="{% static 'site.webmanifest' %}">
-		<link rel="mask-icon" href="{% static 'safari-pinned-tab.svg"' %}" color="#5bbad5">
+		<link rel="mask-icon" href="{% static 'safari-pinned-tab.svg' %}" color="#5bbad5">
 		<link rel="shortcut icon" href="{% static 'favicon.ico' %}">
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
@@ -22,10 +22,10 @@
 		{% endblock %}
 	</head>
 	<body>
-		<nav class="navbar is-info" role="navigation" aria-label="main navigation">
+		<nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
 			<div class="container">
 				<div class="navbar-brand">
-					<a class="navbar-item" href="/">
+					<a class="navbar-item" href="{% url 'index' %}">
 						<img src="{% static 'favicon-32x32.png' %}" alt="Eventowl" width="28" height="28">
 					</a>
 					<div class="navbar-burger" data-target="mainMenu">
@@ -36,15 +36,17 @@
 				</div>
 				<div id="mainMenu" class="navbar-menu">
 					<div class="navbar-start">
-						<a class="navbar-item">1st entry</a>
-						<a class="navbar-item">2nd entry</a>
+						<a class="navbar-item" href="{% url 'artists' %}">Artists</a>
+						<a class="navbar-item" href="{% url 'events' %}">Events</a>
 					</div>
 					<div class="navbar-end">
 					</div>
 				</div>
 			</div>
 		</nav>
-		{% block content %}
-		{% endblock %}
+		<div id="app">
+			{% block content %}
+			{% endblock %}
+		</div>
 	</body>
 </html>

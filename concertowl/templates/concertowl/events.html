@@ -1,0 +1,36 @@
+{% extends 'concertowl/base.html' %}
+{% block content %}
+    <section class="section">
+        <div class="container">
+            <h1 class="title">
+            All the events of your favorite artists!
+            </h1>
+            {% if events %}
+                {% for event in events %}
+                    <div class="box">
+                        <article class="media">
+                            <figure class="media-left">
+                                <a class="image is-96x96" href="{{ event.ticket_url }}">
+                                    <img src="{{ event.picture.url }}">
+                                </a>
+                            </figure>
+                            <div class="media-content">
+                                <div class="content">
+                                    <p>
+                                        {% for artist in event.artists.all %}
+                                            <strong>{{ artist|title }}</strong>{% if not forloop.last %},{% endif %}
+                                        {% endfor %}
+                                    </p>
+                                    <p>{{ event.date_time}} at {{ event.venue }}</p>
+                                    <p>Buy your ticket <a href="{{ event.ticket_url }}">here</a></p>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No events available</p>
+            {% endif %}
+        </div>
+    </section>
+{% endblock content %}

@@ -4,6 +4,8 @@ from django.db import models
 class Artist(models.Model):
     name = models.CharField(max_length=200)
     picture = models.ImageField(upload_to='artist', default='artist/default.jpg')
+    description = models.TextField(blank=True, default="")
+    url = models.URLField(blank=True, default="")
 
     def __str__(self):
         return self.name

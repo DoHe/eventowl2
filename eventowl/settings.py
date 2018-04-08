@@ -24,7 +24,9 @@ SECRET_KEY = 'l%!^+qc0kgnjg^+c#%*^fxo7kdq-b+w^j--n3hlr)7sf*=e3^a'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'local.eventowl.com'
+]
 
 # Application definition
 
