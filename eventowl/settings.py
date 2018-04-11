@@ -25,7 +25,8 @@ SECRET_KEY = 'l%!^+qc0kgnjg^+c#%*^fxo7kdq-b+w^j--n3hlr)7sf*=e3^a'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'local.eventowl.com'
+    'local.eventowl.com',
+    '127.0.0.1'
 ]
 
 # Application definition

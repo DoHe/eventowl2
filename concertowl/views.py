@@ -13,5 +13,10 @@ def events(request):
 
 
 def artists(request):
-    artists = Artist.objects.order_by('name')
+    artists = [{
+        'name': artist.name,
+        'picture_url': artist.picture.url,
+        'description': artist.description,
+        'url': artist.url
+    } for artist in Artist.objects.order_by('name')]
     return render(request, 'concertowl/artists.html', {'artists': artists})

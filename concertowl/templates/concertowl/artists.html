@@ -1,22 +1,11 @@
 {% extends 'concertowl/base.html' %}
 {% block content %}
-    <section class="section">
-        <div class="container">
-            <h1 class="title">
-            All your favorite artists!
-            </h1>
-            {% for artist in artists %}
-                <artist artist-name="{{ artist.name }}" image-url="{{ artist.picture.url }}" description="{{ artist.description }}" url="{{ artist.url }}">
-                </artist>
-            {% endfor %}
-            <div class="has-text-centered">
-                <div class="button is-large">
-                    <span class="icon is-large">
-                        <i class="fa fa-plus"></i>
-                    </span>
-                </div>
-            </div>
-            
-        </div>
-    </section>
+<section class="section">
+  <div class="container">
+    <h1 class="title">
+      All your favorite artists!
+    </h1>
+    <artists :artists="{{ artists }}" v-on:remove-artist="console.log('test')"></artists>
+  </div>
+</section>
 {% endblock content %}

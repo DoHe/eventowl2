@@ -14,7 +14,7 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"box"},[_c('button',{staticClass:"delete is-pulled-right",on:{"click":_vm.remove}}),_vm._v(" "),_c('article',{staticClass:"media"},[_c('figure',{staticClass:"media-left"},[_c('p',{staticClass:"image is-96x96"},[_c('img',{attrs:{"src":_vm.imageUrl}})])]),_vm._v(" "),_c('div',{staticClass:"media-content"},[_c('div',{staticClass:"content"},[_c('p',[_c('strong',[_vm._v(_vm._s(_vm.artistName))])]),_vm._v(" "),(_vm.description)?_c('p',[_vm._v(_vm._s(_vm.description)),(_vm.url)?_c('span',[_c('br'),_vm._v("See more on "),_c('a',{attrs:{"href":_vm.url,"target":"_blank"}},[_vm._v("Wikipedia")]),_vm._v(".")]):_vm._e()]):_vm._e()])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"box"},[_c('button',{staticClass:"delete is-pulled-right",on:{"click":function($event){_vm.$emit('remove-artist')}}}),_vm._v(" "),_c('article',{staticClass:"media"},[_c('figure',{staticClass:"media-left"},[_c('p',{staticClass:"image is-96x96"},[_c('img',{attrs:{"src":_vm.imageUrl}})])]),_vm._v(" "),_c('div',{staticClass:"media-content"},[_c('div',{staticClass:"content"},[_c('p',[_c('strong',[_vm._v(_vm._s(_vm.artistName))])]),_vm._v(" "),(_vm.description)?_c('p',[_vm._v("\n          "+_vm._s(_vm.description)+"\n          "),(_vm.url)?_c('span',[_c('br'),_vm._v(" See more on "),_c('a',{attrs:{"href":_vm.url,"target":"_blank"}},[_vm._v("Wikipedia")]),_vm._v(".\n          ")]):_vm._e()]):_vm._e()])])])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -26,7 +26,65 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-500172f8", __vue__options__)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":5}],2:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":7}],2:[function(require,module,exports){
+var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".add-button {\n  margin-top: 20px;\n}")
+;(function(){
+'use strict';
+
+var Artist = require('./artist.vue');
+
+module.exports = {
+  props: ['artists'],
+  data: function data() {
+    return {
+      artistsData: this.artists
+    };
+  },
+
+  methods: {
+    showAddArtist: function showAddArtist() {
+      this.$el.querySelector('.js-artist-warning').classList.add('is-invisible');
+      var input = this.$el.querySelector('.js-artist-input');
+      input.value = '';
+      this.$el.querySelector('.js-add-modal').classList.add('is-active');
+      input.focus();
+    },
+    closeModal: function closeModal() {
+      this.$el.querySelector('.js-add-modal').classList.remove('is-active');
+    },
+    addArtist: function addArtist() {
+      var artistName = this.$el.querySelector('.js-artist-input').value;
+      if (!artistName) {
+        this.$el.querySelector('.js-artist-warning').classList.remove('is-invisible');
+        return;
+      }
+      this.artists.push({ name: artistName, picture_url: '/media/artist/default.jpg' });
+      this.closeModal();
+    },
+    removeArtist: function removeArtist(artistName) {
+      console.log('blub: ' + artistName);
+    }
+  },
+  components: { Artist: Artist }
+};
+})()
+if (module.exports.__esModule) module.exports = module.exports.default
+var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
+if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"container"},[_vm._l((_vm.artistsData),function(artist){return _c('div',{key:artist.name},[_c('artist',{attrs:{"artist-name":artist.name,"image-url":artist.picture_url,"description":artist.description,"url":artist.url}})],1)}),_vm._v(" "),_c('div',{staticClass:"has-text-centered add-button",on:{"click":_vm.showAddArtist}},[_vm._m(0)]),_vm._v(" "),_c('div',{staticClass:"js-add-modal modal"},[_c('div',{staticClass:"modal-background",on:{"click":_vm.closeModal}}),_vm._v(" "),_c('div',{staticClass:"modal-content"},[_c('div',{staticClass:"box"},[_c('div',{staticClass:"field"},[_c('label',{staticClass:"label"},[_vm._v("Artist name")]),_vm._v(" "),_c('div',{staticClass:"control has-icons-left"},[_c('input',{staticClass:"js-artist-input input",attrs:{"type":"text","placeholder":"Artist name"},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.addArtist($event)}}}),_vm._v(" "),_vm._m(1)]),_vm._v(" "),_c('p',{staticClass:"js-artist-warning help is-invisible is-danger"},[_vm._v("You have to provide an artist name")])]),_vm._v(" "),_c('div',{staticClass:"field"},[_c('div',{staticClass:"control"},[_c('button',{staticClass:"button is-link",on:{"click":_vm.addArtist}},[_vm._v("Add")])])])])]),_vm._v(" "),_c('button',{staticClass:"modal-close is-large",attrs:{"aria-label":"close"},on:{"click":_vm.closeModal}})])],2)}
+__vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"button is-large"},[_c('span',{staticClass:"icon is-large"},[_c('i',{staticClass:"fa fa-plus"})])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"icon is-small is-left"},[_c('i',{staticClass:"fas fa-music"})])}]
+if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), true)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  module.hot.dispose(__vueify_style_dispose__)
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-984ee5aa", __vue__options__)
+  } else {
+    hotAPI.reload("data-v-984ee5aa", __vue__options__)
+  }
+})()}
+},{"./artist.vue":1,"vue":8,"vue-hot-reload-api":7,"vueify/lib/insert-css":9}],3:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -38,17 +96,26 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
     hotAPI.reload("data-v-7dc6170e", __vue__options__)
   }
 })()}
-},{"vue":6,"vue-hot-reload-api":5}],3:[function(require,module,exports){
+},{"vue":8,"vue-hot-reload-api":7}],4:[function(require,module,exports){
+"use strict";
+
+module.exports.nodeListToArray = function (nodeList) {
+  return Array.prototype.slice.call(nodeList, 0);
+};
+
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
 
-var Artist = require('./components/artist.vue');
+var _require = require('./helpers'),
+    nodeListToArray = _require.nodeListToArray;
+
+var Artists = require('./components/artists.vue');
 var Event = require('./components/event.vue');
 
 document.addEventListener('DOMContentLoaded', function () {
-  var navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-  navbarBurgers.forEach(function (el) {
+  nodeListToArray(document.querySelectorAll('.navbar-burger')).forEach(function (el) {
     el.addEventListener('click', function () {
       var target = document.getElementById(el.dataset.target);
       el.classList.toggle('is-active');
@@ -58,11 +125,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var app = new Vue({
     el: '#app',
-    components: { Artist: Artist, Event: Event }
+    components: { Artists: Artists, Event: Event }
   });
 });
 
-},{"./components/artist.vue":1,"./components/event.vue":2,"vue":6}],4:[function(require,module,exports){
+},{"./components/artists.vue":2,"./components/event.vue":3,"./helpers":4,"vue":8}],6:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -248,7 +315,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = (window.__VUE_HOT_MAP__ = Object.create(null))
@@ -490,7 +557,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v2.5.16
@@ -11454,4 +11521,29 @@ Vue.compile = compileToFunctions;
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":4}]},{},[3]);
+},{"_process":6}],9:[function(require,module,exports){
+var inserted = exports.cache = {}
+
+function noop () {}
+
+exports.insert = function (css) {
+  if (inserted[css]) return noop
+  inserted[css] = true
+
+  var elem = document.createElement('style')
+  elem.setAttribute('type', 'text/css')
+
+  if ('textContent' in elem) {
+    elem.textContent = css
+  } else {
+    elem.styleSheet.cssText = css
+  }
+
+  document.getElementsByTagName('head')[0].appendChild(elem)
+  return function () {
+    document.getElementsByTagName('head')[0].removeChild(elem)
+    inserted[css] = false
+  }
+}
+
+},{}]},{},[5]);
