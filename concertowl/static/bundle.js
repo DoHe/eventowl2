@@ -2,11 +2,15 @@
 ;(function(){
 'use strict';
 
+var _require = require('../helpers'),
+    callBackend = _require.callBackend;
+
 module.exports = {
   props: ['description', 'url', 'artistName', 'imageUrl'],
   methods: {
     remove: function remove() {
-      window.fetch('/artists?name=' + this.artistName, { method: 'delete' });
+      this.$parent.$emit('remove_artist', this.artistName);
+      callBackend('/artists/' + this.artistName + '/', { method: 'delete' });
     }
   }
 };
@@ -14,22 +18,25 @@ module.exports = {
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"box"},[_c('button',{staticClass:"delete is-pulled-right",on:{"click":function($event){_vm.$emit('remove-artist')}}}),_vm._v(" "),_c('article',{staticClass:"media"},[_c('figure',{staticClass:"media-left"},[_c('p',{staticClass:"image is-96x96"},[_c('img',{attrs:{"src":_vm.imageUrl}})])]),_vm._v(" "),_c('div',{staticClass:"media-content"},[_c('div',{staticClass:"content"},[_c('p',[_c('strong',[_vm._v(_vm._s(_vm.artistName))])]),_vm._v(" "),(_vm.description)?_c('p',[_vm._v("\n          "+_vm._s(_vm.description)+"\n          "),(_vm.url)?_c('span',[_c('br'),_vm._v(" See more on "),_c('a',{attrs:{"href":_vm.url,"target":"_blank"}},[_vm._v("Wikipedia")]),_vm._v(".\n          ")]):_vm._e()]):_vm._e()])])])])}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"box"},[_c('div',{staticClass:"delete is-pulled-right",on:{"click":_vm.remove}}),_vm._v(" "),_c('article',{staticClass:"media"},[_c('figure',{staticClass:"media-left"},[_c('p',{staticClass:"image is-96x96"},[_c('img',{attrs:{"src":_vm.imageUrl}})])]),_vm._v(" "),_c('div',{staticClass:"media-content"},[_c('div',{staticClass:"content"},[_c('p',[_c('strong',[_c('span',{staticClass:"is-capitalized"},[_vm._v(_vm._s(_vm.artistName))])])]),_vm._v(" "),(_vm.description)?_c('p',[_vm._v("\n          "+_vm._s(_vm.description)+"\n          "),(_vm.url)?_c('span',[_c('br'),_vm._v(" See more on "),_c('a',{attrs:{"href":_vm.url,"target":"_blank"}},[_vm._v("Wikipedia")]),_vm._v(".\n          ")]):_vm._e()]):_vm._e()])])])])}
 __vue__options__.staticRenderFns = []
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-500172f8", __vue__options__)
+    hotAPI.createRecord("data-v-249f5092", __vue__options__)
   } else {
-    hotAPI.reload("data-v-500172f8", __vue__options__)
+    hotAPI.reload("data-v-249f5092", __vue__options__)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":7}],2:[function(require,module,exports){
+},{"../helpers":4,"vue":9,"vue-hot-reload-api":8}],2:[function(require,module,exports){
 var __vueify_style_dispose__ = require("vueify/lib/insert-css").insert(".add-button {\n  margin-top: 20px;\n}")
 ;(function(){
 'use strict';
+
+var _require = require('../helpers'),
+    callBackend = _require.callBackend;
 
 var Artist = require('./artist.vue');
 
@@ -37,41 +44,66 @@ module.exports = {
   props: ['artists'],
   data: function data() {
     return {
-      artistsData: this.artists
+      artistsData: this.artists,
+      addWarning: ''
     };
   },
 
   methods: {
     showAddArtist: function showAddArtist() {
-      this.$el.querySelector('.js-artist-warning').classList.add('is-invisible');
       var input = this.$el.querySelector('.js-artist-input');
       input.value = '';
       this.$el.querySelector('.js-add-modal').classList.add('is-active');
       input.focus();
     },
     closeModal: function closeModal() {
+      this.addWarning = '';
       this.$el.querySelector('.js-add-modal').classList.remove('is-active');
     },
     addArtist: function addArtist() {
+      var _this = this;
+
       var artistName = this.$el.querySelector('.js-artist-input').value;
       if (!artistName) {
-        this.$el.querySelector('.js-artist-warning').classList.remove('is-invisible');
+        this.addWarning = 'You have to provide a name!';
         return;
       }
-      this.artists.push({ name: artistName, picture_url: '/media/artist/default.jpg' });
+      artistName = artistName.toLowerCase();
+      if (this.artistsData.some(function (artist) {
+        return artistName === artist.name;
+      })) {
+        this.addWarning = 'You already follow this artist!';
+        return;
+      }
+      this.artistsData.push({ name: artistName, picture_url: '/static/default_artist.jpg' });
       this.closeModal();
+      callBackend('/artists/' + artistName + '/', { method: 'post' }).then(function (response) {
+        return response.json();
+      }).then(function (newArtist) {
+        _this.artistsData.forEach(function (artist, index) {
+          if (artist.name === newArtist.name) {
+            _this.$set(_this.artistsData, index, newArtist);
+          }
+        });
+      });
     },
     removeArtist: function removeArtist(artistName) {
-      console.log('blub: ' + artistName);
+      this.artistsData = this.artistsData.filter(function (artist) {
+        return artist.name !== artistName;
+      });
     }
   },
+  mounted: function mounted() {
+    this.$on('remove_artist', this.removeArtist);
+  },
+
   components: { Artist: Artist }
 };
 })()
 if (module.exports.__esModule) module.exports = module.exports.default
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (__vue__options__.functional) {console.error("[vueify] functional components are not supported and should be defined in plain js files using render functions.")}
-__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"container"},[_vm._l((_vm.artistsData),function(artist){return _c('div',{key:artist.name},[_c('artist',{attrs:{"artist-name":artist.name,"image-url":artist.picture_url,"description":artist.description,"url":artist.url}})],1)}),_vm._v(" "),_c('div',{staticClass:"has-text-centered add-button",on:{"click":_vm.showAddArtist}},[_vm._m(0)]),_vm._v(" "),_c('div',{staticClass:"js-add-modal modal"},[_c('div',{staticClass:"modal-background",on:{"click":_vm.closeModal}}),_vm._v(" "),_c('div',{staticClass:"modal-content"},[_c('div',{staticClass:"box"},[_c('div',{staticClass:"field"},[_c('label',{staticClass:"label"},[_vm._v("Artist name")]),_vm._v(" "),_c('div',{staticClass:"control has-icons-left"},[_c('input',{staticClass:"js-artist-input input",attrs:{"type":"text","placeholder":"Artist name"},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.addArtist($event)}}}),_vm._v(" "),_vm._m(1)]),_vm._v(" "),_c('p',{staticClass:"js-artist-warning help is-invisible is-danger"},[_vm._v("You have to provide an artist name")])]),_vm._v(" "),_c('div',{staticClass:"field"},[_c('div',{staticClass:"control"},[_c('button',{staticClass:"button is-link",on:{"click":_vm.addArtist}},[_vm._v("Add")])])])])]),_vm._v(" "),_c('button',{staticClass:"modal-close is-large",attrs:{"aria-label":"close"},on:{"click":_vm.closeModal}})])],2)}
+__vue__options__.render = function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"container"},[_vm._l((_vm.artistsData),function(artist){return _c('div',{key:artist.name},[_c('artist',{attrs:{"artist-name":artist.name,"image-url":artist.picture_url,"description":artist.description,"url":artist.url}})],1)}),_vm._v(" "),_c('div',{staticClass:"has-text-centered add-button",on:{"click":_vm.showAddArtist}},[_vm._m(0)]),_vm._v(" "),_c('div',{staticClass:"js-add-modal modal"},[_c('div',{staticClass:"modal-background",on:{"click":_vm.closeModal}}),_vm._v(" "),_c('div',{staticClass:"modal-content"},[_c('div',{staticClass:"box"},[_c('div',{staticClass:"field"},[_c('label',{staticClass:"label"},[_vm._v("Artist name")]),_vm._v(" "),_c('div',{staticClass:"control has-icons-left"},[_c('input',{staticClass:"js-artist-input input",attrs:{"type":"text","placeholder":"Artist name"},on:{"keyup":function($event){if(!('button' in $event)&&_vm._k($event.keyCode,"enter",13,$event.key,"Enter")){ return null; }return _vm.addArtist($event)}}}),_vm._v(" "),_vm._m(1)]),_vm._v(" "),_c('p',{staticClass:"js-artist-warning help is-danger",class:{ isInvisible: _vm.addWarning === '' }},[_vm._v(_vm._s(_vm.addWarning))])]),_vm._v(" "),_c('div',{staticClass:"field"},[_c('div',{staticClass:"control"},[_c('button',{staticClass:"button is-link",on:{"click":_vm.addArtist}},[_vm._v("Add")])])])])]),_vm._v(" "),_c('button',{staticClass:"modal-close is-large",attrs:{"aria-label":"close"},on:{"click":_vm.closeModal}})])],2)}
 __vue__options__.staticRenderFns = [function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"button is-large"},[_c('span',{staticClass:"icon is-large"},[_c('i',{staticClass:"fa fa-plus"})])])},function render () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('span',{staticClass:"icon is-small is-left"},[_c('i',{staticClass:"fas fa-music"})])}]
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
@@ -79,31 +111,43 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   module.hot.accept()
   module.hot.dispose(__vueify_style_dispose__)
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-984ee5aa", __vue__options__)
+    hotAPI.createRecord("data-v-67f37f68", __vue__options__)
   } else {
-    hotAPI.reload("data-v-984ee5aa", __vue__options__)
+    hotAPI.reload("data-v-67f37f68", __vue__options__)
   }
 })()}
-},{"./artist.vue":1,"vue":8,"vue-hot-reload-api":7,"vueify/lib/insert-css":9}],3:[function(require,module,exports){
+},{"../helpers":4,"./artist.vue":1,"vue":9,"vue-hot-reload-api":8,"vueify/lib/insert-css":10}],3:[function(require,module,exports){
 var __vue__options__ = (typeof module.exports === "function"? module.exports.options: module.exports)
 if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   hotAPI.install(require("vue"), true)
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7dc6170e", __vue__options__)
+    hotAPI.createRecord("data-v-94a2084c", __vue__options__)
   } else {
-    hotAPI.reload("data-v-7dc6170e", __vue__options__)
+    hotAPI.reload("data-v-94a2084c", __vue__options__)
   }
 })()}
-},{"vue":8,"vue-hot-reload-api":7}],4:[function(require,module,exports){
-"use strict";
+},{"vue":9,"vue-hot-reload-api":8}],4:[function(require,module,exports){
+'use strict';
+
+var Cookies = require('js-cookie');
 
 module.exports.nodeListToArray = function (nodeList) {
   return Array.prototype.slice.call(nodeList, 0);
 };
 
-},{}],5:[function(require,module,exports){
+module.exports.callBackend = function (url, options) {
+  var opts = Object.assign({
+    credentials: 'same-origin',
+    headers: {
+      'X-CSRFToken': Cookies.get('csrftoken')
+    }
+  }, options);
+  return window.fetch(url, opts);
+};
+
+},{"js-cookie":6}],5:[function(require,module,exports){
 'use strict';
 
 var Vue = require('vue');
@@ -129,7 +173,174 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
-},{"./components/artists.vue":2,"./components/event.vue":3,"./helpers":4,"vue":8}],6:[function(require,module,exports){
+},{"./components/artists.vue":2,"./components/event.vue":3,"./helpers":4,"vue":9}],6:[function(require,module,exports){
+/*!
+ * JavaScript Cookie v2.2.0
+ * https://github.com/js-cookie/js-cookie
+ *
+ * Copyright 2006, 2015 Klaus Hartl & Fagner Brack
+ * Released under the MIT license
+ */
+;(function (factory) {
+	var registeredInModuleLoader = false;
+	if (typeof define === 'function' && define.amd) {
+		define(factory);
+		registeredInModuleLoader = true;
+	}
+	if (typeof exports === 'object') {
+		module.exports = factory();
+		registeredInModuleLoader = true;
+	}
+	if (!registeredInModuleLoader) {
+		var OldCookies = window.Cookies;
+		var api = window.Cookies = factory();
+		api.noConflict = function () {
+			window.Cookies = OldCookies;
+			return api;
+		};
+	}
+}(function () {
+	function extend () {
+		var i = 0;
+		var result = {};
+		for (; i < arguments.length; i++) {
+			var attributes = arguments[ i ];
+			for (var key in attributes) {
+				result[key] = attributes[key];
+			}
+		}
+		return result;
+	}
+
+	function init (converter) {
+		function api (key, value, attributes) {
+			var result;
+			if (typeof document === 'undefined') {
+				return;
+			}
+
+			// Write
+
+			if (arguments.length > 1) {
+				attributes = extend({
+					path: '/'
+				}, api.defaults, attributes);
+
+				if (typeof attributes.expires === 'number') {
+					var expires = new Date();
+					expires.setMilliseconds(expires.getMilliseconds() + attributes.expires * 864e+5);
+					attributes.expires = expires;
+				}
+
+				// We're using "expires" because "max-age" is not supported by IE
+				attributes.expires = attributes.expires ? attributes.expires.toUTCString() : '';
+
+				try {
+					result = JSON.stringify(value);
+					if (/^[\{\[]/.test(result)) {
+						value = result;
+					}
+				} catch (e) {}
+
+				if (!converter.write) {
+					value = encodeURIComponent(String(value))
+						.replace(/%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g, decodeURIComponent);
+				} else {
+					value = converter.write(value, key);
+				}
+
+				key = encodeURIComponent(String(key));
+				key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent);
+				key = key.replace(/[\(\)]/g, escape);
+
+				var stringifiedAttributes = '';
+
+				for (var attributeName in attributes) {
+					if (!attributes[attributeName]) {
+						continue;
+					}
+					stringifiedAttributes += '; ' + attributeName;
+					if (attributes[attributeName] === true) {
+						continue;
+					}
+					stringifiedAttributes += '=' + attributes[attributeName];
+				}
+				return (document.cookie = key + '=' + value + stringifiedAttributes);
+			}
+
+			// Read
+
+			if (!key) {
+				result = {};
+			}
+
+			// To prevent the for loop in the first place assign an empty array
+			// in case there are no cookies at all. Also prevents odd result when
+			// calling "get()"
+			var cookies = document.cookie ? document.cookie.split('; ') : [];
+			var rdecode = /(%[0-9A-Z]{2})+/g;
+			var i = 0;
+
+			for (; i < cookies.length; i++) {
+				var parts = cookies[i].split('=');
+				var cookie = parts.slice(1).join('=');
+
+				if (!this.json && cookie.charAt(0) === '"') {
+					cookie = cookie.slice(1, -1);
+				}
+
+				try {
+					var name = parts[0].replace(rdecode, decodeURIComponent);
+					cookie = converter.read ?
+						converter.read(cookie, name) : converter(cookie, name) ||
+						cookie.replace(rdecode, decodeURIComponent);
+
+					if (this.json) {
+						try {
+							cookie = JSON.parse(cookie);
+						} catch (e) {}
+					}
+
+					if (key === name) {
+						result = cookie;
+						break;
+					}
+
+					if (!key) {
+						result[name] = cookie;
+					}
+				} catch (e) {}
+			}
+
+			return result;
+		}
+
+		api.set = api;
+		api.get = function (key) {
+			return api.call(api, key);
+		};
+		api.getJSON = function () {
+			return api.apply({
+				json: true
+			}, [].slice.call(arguments));
+		};
+		api.defaults = {};
+
+		api.remove = function (key, attributes) {
+			api(key, '', extend(attributes, {
+				expires: -1
+			}));
+		};
+
+		api.withConverter = init;
+
+		return api;
+	}
+
+	return init(function () {});
+}));
+
+},{}],7:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -315,7 +526,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 var Vue // late bind
 var version
 var map = (window.__VUE_HOT_MAP__ = Object.create(null))
@@ -557,7 +768,7 @@ exports.reload = tryWrap(function (id, options) {
   })
 })
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (process,global){
 /*!
  * Vue.js v2.5.16
@@ -11521,7 +11732,7 @@ Vue.compile = compileToFunctions;
 module.exports = Vue;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"_process":6}],9:[function(require,module,exports){
+},{"_process":7}],10:[function(require,module,exports){
 var inserted = exports.cache = {}
 
 function noop () {}

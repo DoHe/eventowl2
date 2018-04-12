@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <button class="delete is-pulled-right" @click="$emit('remove-artist')"/>
+    <div class="delete is-pulled-right" @click="remove"/>
     <article class="media">
       <figure class="media-left">
         <p class="image is-96x96">
@@ -9,7 +9,7 @@
       </figure>
       <div class="media-content">
         <div class="content">
-          <p><strong>{{ artistName }}</strong></p>
+          <p><strong><span class="is-capitalized">{{ artistName }}</span></strong></p>
           <p v-if="description">
             {{ description }}
             <span v-if="url">
@@ -23,12 +23,14 @@
 </template>
 
 <script>
+const { callBackend } = require('../helpers');
+
 module.exports = {
   props: ['description', 'url', 'artistName', 'imageUrl'],
   methods: {
     remove() {
-      // this.$emit('remove-artist', this.artistName);
-      window.fetch(`/artists?name=${this.artistName}`, { method: 'delete' });
+      this.$parent.$emit('remove_artist', this.artistName);
+      callBackend(`/artists/${this.artistName}/`, { method: 'delete' });
     },
   },
 };

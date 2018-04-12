@@ -5,7 +5,7 @@
         :artist-name="artist.name"
         :image-url="artist.picture_url"
         :description="artist.description"
-        :url="artist.url"/>
+        :url="artist.url" />
     </div>
     <div class="has-text-centered add-button" @click="showAddArtist">
       <div class="button is-large">
@@ -30,7 +30,7 @@
                 <i class="fas fa-music"/>
               </span>
             </div>
-            <p class="js-artist-warning help is-invisible is-danger">You have to provide an artist name</p>
+            <p class="js-artist-warning help is-danger" :class="{ isInvisible: addWarning === '' }">{{ addWarning }}</p>
           </div>
           <div class="field">
             <div class="control">
@@ -45,6 +45,7 @@
 </template>
 
 <script>
+const { callBackend } = require('../helpers');
 const Artist = require('./artist.vue');
 
 module.exports = {
@@ -52,31 +53,49 @@ module.exports = {
   data() {
     return {
       artistsData: this.artists,
+      addWarning: '',
     };
   },
   methods: {
     showAddArtist() {
-      this.$el.querySelector('.js-artist-warning').classList.add('is-invisible');
       const input = this.$el.querySelector('.js-artist-input');
       input.value = '';
       this.$el.querySelector('.js-add-modal').classList.add('is-active');
       input.focus();
     },
     closeModal() {
+      this.addWarning = '';
       this.$el.querySelector('.js-add-modal').classList.remove('is-active');
     },
     addArtist() {
-      const artistName = this.$el.querySelector('.js-artist-input').value;
+      let artistName = this.$el.querySelector('.js-artist-input').value;
       if (!artistName) {
-        this.$el.querySelector('.js-artist-warning').classList.remove('is-invisible');
+        this.addWarning = 'You have to provide a name!';
         return;
       }
-      this.artists.push({ name: artistName, picture_url: '/media/artist/default.jpg' });
+      artistName = artistName.toLowerCase();
+      if (this.artistsData.some(artist => artistName === artist.name)) {
+        this.addWarning = 'You already follow this artist!';
+        return;
+      }
+      this.artistsData.push({ name: artistName, picture_url: '/static/default_artist.jpg' });
       this.closeModal();
+      callBackend(`/artists/${artistName}/`, { method: 'post' })
+        .then(response => response.json())
+        .then((newArtist) => {
+          this.artistsData.forEach((artist, index) => {
+            if (artist.name === newArtist.name) {
+              this.$set(this.artistsData, index, newArtist);
+            }
+          });
+        });
     },
     removeArtist(artistName) {
-      console.log(`blub: ${artistName}`);
+      this.artistsData = this.artistsData.filter(artist => artist.name !== artistName);
     },
+  },
+  mounted() {
+    this.$on('remove_artist', this.removeArtist);
   },
   components: { Artist },
 };
