@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <div v-for="artist in artistsData" :key="artist.name">
-      <artist
-        :artist-name="artist.name"
-        :image-url="artist.picture_url"
-        :description="artist.description"
-        :url="artist.url" />
-    </div>
+    <artist
+      v-for="artist in artistsData"
+      :key="artist.name"
+      :artist-name="artist.name"
+      :image-url="artist.picture_url"
+      :description="artist.description"
+      :url="artist.url" />
     <div class="has-text-centered add-button" @click="showAddArtist">
       <div class="button is-large">
         <span class="icon is-large">
@@ -30,7 +30,11 @@
                 <i class="fas fa-music"/>
               </span>
             </div>
-            <p class="js-artist-warning help is-danger" :class="{ isInvisible: addWarning === '' }">{{ addWarning }}</p>
+            <p
+              :class="{ isInvisible: addWarning === '' }"
+              class="js-artist-warning help is-danger">
+              {{ addWarning }}
+            </p>
           </div>
           <div class="field">
             <div class="control">
@@ -90,12 +94,6 @@ module.exports = {
           });
         });
     },
-    removeArtist(artistName) {
-      this.artistsData = this.artistsData.filter(artist => artist.name !== artistName);
-    },
-  },
-  mounted() {
-    this.$on('remove_artist', this.removeArtist);
   },
   components: { Artist },
 };

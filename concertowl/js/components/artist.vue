@@ -1,5 +1,5 @@
 <template>
-  <div class="box">
+  <div v-if="!deleted" class="box">
     <div class="delete is-pulled-right" @click="remove"/>
     <article class="media">
       <figure class="media-left">
@@ -13,7 +13,7 @@
           <p v-if="description">
             {{ description }}
             <span v-if="url">
-              </br> See more on <a :href="url" target="_blank">Wikipedia</a>.
+              <br> See more on <a :href="url" target="_blank">Wikipedia</a>.
             </span>
           </p>
         </div>
@@ -27,9 +27,14 @@ const { callBackend } = require('../helpers');
 
 module.exports = {
   props: ['description', 'url', 'artistName', 'imageUrl'],
+  data() {
+    return {
+      deleted: false,
+    };
+  },
   methods: {
     remove() {
-      this.$parent.$emit('remove_artist', this.artistName);
+      this.deleted = true;
       callBackend(`/artists/${this.artistName}/`, { method: 'delete' });
     },
   },

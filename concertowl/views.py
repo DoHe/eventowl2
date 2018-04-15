@@ -2,7 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 
-from concertowl.helpers import get_wikipedia_description, get_or_none
+from concertowl.apis.wikipedia import get_wikipedia_description
+from concertowl.helpers import get_or_none
 from concertowl.models import Event, Artist
 
 
