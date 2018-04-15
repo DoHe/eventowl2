@@ -7,13 +7,13 @@ THUMBNAIL_URL = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages
 
 @retry(wait_fixed=2000, stop_max_attempt_number=10)
 def get_thumbnail(title):
-    response = requests.get(OPENSEARCH_URL + title).json()
+    response = requests.get(THUMBNAIL_URL + title).json()
     return response['query']['pages'][0].get('thumbnail', {'source': None})['source']
 
 
 @retry(wait_fixed=2000, stop_max_attempt_number=10)
 def get_wikipedia_description(name):
-    _, titles, descriptions, urls = requests.get(THUMBNAIL_URL + name).json()
+    _, titles, descriptions, urls = requests.get(OPENSEARCH_URL + name).json()
     if not titles:
         return None
     for title, description, url in zip(titles, descriptions, urls):

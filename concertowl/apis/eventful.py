@@ -1,7 +1,6 @@
 import os
 from functools import partial
 from multiprocessing.pool import Pool
-from pprint import pprint
 
 import requests
 from retrying import retry
@@ -92,6 +91,3 @@ def get_events_for_artists(artists, location):
 
 def get_events_for_artist(artist, location):
     return _get_events(artist, location)
-
-
-pprint(get_events_for_artist('zeke', 'Berlin, Germany'))

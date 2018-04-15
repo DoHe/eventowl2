@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!deleted" class="box">
+  <div class="box">
     <div class="delete is-pulled-right" @click="remove"/>
     <article class="media">
       <figure class="media-left">
@@ -27,14 +27,9 @@ const { callBackend } = require('../helpers');
 
 module.exports = {
   props: ['description', 'url', 'artistName', 'imageUrl'],
-  data() {
-    return {
-      deleted: false,
-    };
-  },
   methods: {
     remove() {
-      this.deleted = true;
+      this.$parent.$emit('remove_artist', this.artistName);
       callBackend(`/artists/${this.artistName}/`, { method: 'delete' });
     },
   },

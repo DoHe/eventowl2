@@ -2,9 +2,51 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 
+from concertowl.apis.eventful import get_events_for_artist
 from concertowl.apis.wikipedia import get_wikipedia_description
 from concertowl.helpers import get_or_none
 from concertowl.models import Event, Artist
+
+
+def _add_artist(name, user=None):
+    artist = Artist(name=name)
+    try:
+        description, url, picture = get_wikipedia_description(name)
+        if description:
+            artist.description = description
+        if url:
+            artist.url = url
+        if picture:
+            artist.picture = picture
+    except:
+        pass
+    artist.save()
+    if user:
+        artist.subscribers.add(user)
+        artist.save()
+    return artist
+
+
+def _add_events(artist_name, location):
+    print("Adding events...")
+    for event in get_events_for_artist(artist_name, location):
+        event_object, new = Event.objects.get_or_create(
+            venue=event['venue'],
+            city=event['city'],
+            start_time=event['start_time']
+        )
+        if new:
+            for key in event:
+                if key == 'artists':
+                    for artist in event[key]:
+                        artist_object = get_or_none(Artist, name=artist)
+                        if artist_object is None:
+                            artist_object = _add_artist(artist)
+                        event_object.artists.add(artist_object)
+                else:
+                    if event[key]:
+                        setattr(event_object, key, event[key])
+            event_object.save()
 
 
 def index(request):
@@ -12,7 +54,7 @@ def index(request):
 
 
 def events(request):
-    events = Event.objects.order_by('-date_time')
+    events = Event.objects.order_by('-start_time')
     return render(request, 'concertowl/events.html', {'events': events})
 
 
@@ -30,21 +72,9 @@ class Artists(View):
             response = {'status': 'Already exists'}
             response.update(artistObject.to_json())
             return JsonResponse(response)
-        description = url = picture = None
-        try:
-            description, url, picture = get_wikipedia_description(artist_name)
-        except:
-            pass
-        artist = Artist(name=artist)
-        if description:
-            artist.description = description
-        if url:
-            artist.url = url
-        if picture:
-            artist.picture = picture
-        artist.save()
-        artist.subscribers.add(request.user)
-        artist.save()
+
+        artist = _add_artist(artist_name, request.user)
+        _add_events(artist_name, 'Berlin, Germany')
         response = {'status': 'Created'}
         response.update(artist.to_json())
         return JsonResponse(response)

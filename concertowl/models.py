@@ -23,15 +23,16 @@ class Artist(models.Model):
 
 
 class Event(models.Model):
+    title = models.CharField(max_length=200)
     venue = models.CharField(max_length=200)
+    address = models.CharField(max_length=200, blank=True, default="")
     city = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
-    date_time = models.DateTimeField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True)
     ticket_url = models.URLField()
     picture = models.URLField(default=templatetags.static.static('default_event.jpg'))
     artists = models.ManyToManyField(Artist)
 
     def __str__(self):
-        return "{} at {} on {}".format(", ".join(artist.name.title() for artist in self.artists.all()),
-                                       str(self.venue),
-                                       str(self.date_time.strftime("%Y-%m-%d")))
+        return "{} at {} on {}".format(str(self.title), str(self.venue), str(self.start_time.strftime("%Y-%m-%d")))

@@ -94,6 +94,12 @@ module.exports = {
           });
         });
     },
+    removeArtist(artistName) {
+      this.artistsData = this.artistsData.filter(artist => artist.name !== artistName);
+    },
+  },
+  mounted() {
+    this.$on('remove_artist', this.removeArtist);
   },
   components: { Artist },
 };
