@@ -2,7 +2,7 @@ const Vue = require('vue');
 
 const { nodeListToArray } = require('./helpers');
 const Artists = require('./components/artists.vue');
-const Event = require('./components/event.vue');
+const Events = require('./components/events.vue');
 
 document.addEventListener('DOMContentLoaded', () => {
   nodeListToArray(document.querySelectorAll('.navbar-burger')).forEach((el) => {
@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  const app = new Vue({
+  new Vue({
     el: '#app',
-    components: { Artists, Event },
+    components: { Artists, Events },
   });
 });

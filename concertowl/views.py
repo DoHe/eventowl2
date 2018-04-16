@@ -1,3 +1,5 @@
+import json
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -54,15 +56,16 @@ def index(request):
 
 
 def events(request):
-    events = Event.objects.order_by('-start_time')
-    return render(request, 'concertowl/events.html', {'events': events})
+    events = [event.to_json() for event in
+              Event.objects.filter(artists__subscribers__id=request.user.id).order_by('-start_time')]
+    return render(request, 'concertowl/events.html', {'events': json.dumps(events)})
 
 
 class Artists(View):
     def get(self, request, artist=None):
         artists = [artist.to_json() for artist in
                    Artist.objects.filter(subscribers__id=request.user.id).order_by('name')]
-        return render(request, 'concertowl/artists.html', {'artists': artists})
+        return render(request, 'concertowl/artists.html', {'artists': json.dumps(artists)})
 
     def post(self, request, artist):
         artist_name = artist.lower()

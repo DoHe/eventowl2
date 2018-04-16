@@ -9,6 +9,7 @@ module.exports = {
         "es6": true
     },
     "rules": {
+        'no-new': 0,
         "vue/max-attributes-per-line": [2, {
             "singleline": 3,
             "multiline": {

@@ -10,7 +10,7 @@
     <div class="has-text-centered add-button" @click="showAddArtist">
       <div class="button is-large">
         <span class="icon is-large">
-          <i class="fa fa-plus"/>
+          <i class="fa icon-plus"/>
         </span>
       </div>
     </div>
@@ -27,7 +27,7 @@
                 placeholder="Artist name"
                 @keyup.enter="addArtist">
               <span class="icon is-small is-left">
-                <i class="fas fa-music"/>
+                <i class="fas icon-music"/>
               </span>
             </div>
             <p
