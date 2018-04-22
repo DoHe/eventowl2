@@ -29,7 +29,7 @@
     "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
-    "eslint-plugin-vue": "^4.4.0",
+    "eslint-plugin-vue": "^4.5.0",
     "eslint_d": "^5.3.0",
     "node-sass": "^4.8.3",
     "vueify": "^9.4.1",
@@ -41,7 +41,7 @@
     ]
   },
   "dependencies": {
-    "bulma": "^0.7.0",
+    "bulma": "^0.7.1",
     "js-cookie": "^2.2.0",
     "uglifyify": "^4.0.5",
     "vue": "^2.5.16"

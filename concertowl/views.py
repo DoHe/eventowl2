@@ -3,52 +3,10 @@ import json
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
+from django_q.tasks import async as async_q
 
-from concertowl.apis.eventful import get_events_for_artist
-from concertowl.apis.wikipedia import get_wikipedia_description
-from concertowl.helpers import get_or_none
+from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications
 from concertowl.models import Event, Artist
-
-
-def _add_artist(name, user=None):
-    artist = Artist(name=name)
-    try:
-        description, url, picture = get_wikipedia_description(name)
-        if description:
-            artist.description = description
-        if url:
-            artist.url = url
-        if picture:
-            artist.picture = picture
-    except:
-        pass
-    artist.save()
-    if user:
-        artist.subscribers.add(user)
-        artist.save()
-    return artist
-
-
-def _add_events(artist_name, location):
-    print("Adding events...")
-    for event in get_events_for_artist(artist_name, location):
-        event_object, new = Event.objects.get_or_create(
-            venue=event['venue'],
-            city=event['city'],
-            start_time=event['start_time']
-        )
-        if new:
-            for key in event:
-                if key == 'artists':
-                    for artist in event[key]:
-                        artist_object = get_or_none(Artist, name=artist)
-                        if artist_object is None:
-                            artist_object = _add_artist(artist)
-                        event_object.artists.add(artist_object)
-                else:
-                    if event[key]:
-                        setattr(event_object, key, event[key])
-            event_object.save()
 
 
 def index(request):
@@ -76,8 +34,8 @@ class Artists(View):
             response.update(artistObject.to_json())
             return JsonResponse(response)
 
-        artist = _add_artist(artist_name, request.user)
-        _add_events(artist_name, 'Berlin, Germany')
+        artist = add_artist(artist_name, request.user)
+        async_q(add_events, artist_name, 'Berlin, Germany')
         response = {'status': 'Created'}
         response.update(artist.to_json())
         return JsonResponse(response)
@@ -89,3 +47,8 @@ class Artists(View):
         if not artist.subscribers.count():
             num_deleted, _ = artist.delete()
         return JsonResponse({'deleted': num_deleted})
+
+
+class Notifications(View):
+    def get(self, request):
+        return JsonResponse({'status': 'ok', 'notifications': user_notifications(request.user.id)})

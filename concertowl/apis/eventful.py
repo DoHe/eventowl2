@@ -1,3 +1,4 @@
+import math
 import os
 from functools import partial
 from multiprocessing.pool import Pool
@@ -5,16 +6,20 @@ from multiprocessing.pool import Pool
 import requests
 from retrying import retry
 
-from concertowl.helpers import as_list
-
 API_URL = "http://api.eventful.com/json/events/search"
 DEFAULT_PARAMS = {'app_key': os.getenv('EVENTFUL_API_KEY'), 'date': 'Future', 'category': 'music'}
+
+
+def _as_list(obj):
+    if not isinstance(obj, list):
+        return [obj]
+    return obj
 
 
 def _performers(event):
     if event['performers'] is None:
         return [event['title'].lower()]
-    return [p['name'].lower() for p in as_list(event['performers']['performer'])]
+    return [p['name'].lower() for p in _as_list(event['performers']['performer'])]
 
 
 def _event(api_event, performers):
@@ -55,7 +60,7 @@ def _get_events_page(artists, location, page_number):
 
 
 @retry(wait_fixed=2000, stop_max_attempt_number=10)
-def _get_events(artist, location):
+def _get_events(artist, location=None):
     resp = requests.get(API_URL, params=dict(location=location, keywords=artist, page_size=250, **DEFAULT_PARAMS))
     resp.raise_for_status()
     parsed = resp.json()
@@ -78,16 +83,26 @@ def _unique_events(collected_events):
     return list(ret.values())
 
 
-def get_events_for_artists(artists, location):
+def get_events_for_artists_block(artists, location):
     print("Getting events...")
     events, page_count = _get_events_page(artists, location, 1)
     print("    {} pages".format(page_count))
     collected_events = [events]
-    with Pool(round(page_count / 4)) as pool:
+    with Pool(math.ceil(page_count / 4)) as pool:
         collected_events += pool.map(partial(_get_events_page, artists, location), range(2, page_count + 2))
     print("Done!")
     return _unique_events(collected_events)
 
 
-def get_events_for_artist(artist, location):
+def get_events_for_artists(artists, locations):
+    collected_events = []
+    with Pool(math.ceil(len(artists) / 4)) as pool:
+        collected_events += pool.map(_get_events, artists)
+    for event in _unique_events(collected_events):
+        location = '{}, {}'.format(event['city'].lower(), event['country'].lower())
+        if location in locations:
+            yield event
+
+
+def get_events_for_artist(artist, location=None):
     return _get_events(artist, location)

@@ -50,3 +50,13 @@ class Event(models.Model):
             'venue': self.venue,
             'artists': [artist.name for artist in self.artists.all()]
         }
+
+
+class Notification(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    event = models.OneToOneField(Event, on_delete=models.CASCADE, related_name='event')
+
+    def to_json(self):
+        j = {'created': self.created.isoformat()}
+        j.update(self.event.to_json())
+        return j
