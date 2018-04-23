@@ -20,6 +20,7 @@ def events(request):
 
 
 class Artists(View):
+
     def get(self, request, artist=None):
         artists = [artist.to_json() for artist in
                    Artist.objects.filter(subscribers__id=request.user.id).order_by('name')]
@@ -50,5 +51,21 @@ class Artists(View):
 
 
 class Notifications(View):
+
     def get(self, request):
         return JsonResponse({'status': 'ok', 'notifications': user_notifications(request.user.id)})
+
+
+class Spotify(View):
+
+    def get(self, request):
+        return JsonResponse({})
+        # if request.GET.get('code') is not None:
+        #     code = request.GET.get('code')
+        #     token_info = spotify_token_from_code(code)
+        #     print(token_info["access_token"])
+        #     print(token_info["refresh_token"]
+        #     spotify_artists.delay(token_info["access_token"], request.user)
+        #     return render(request, 'concertowl/spotify_running.html')
+        #
+        # return render(request, 'concertowl/spotify.html')

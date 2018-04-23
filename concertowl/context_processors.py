@@ -1,5 +1,7 @@
+import json
+
 from concertowl.helpers import user_notifications
 
 
-def notification_count(request):
-    return {'num_notifications': len(user_notifications(request.user.id))}
+def notifications(request):
+    return {'notifications': json.dumps(user_notifications(request.user.id))}

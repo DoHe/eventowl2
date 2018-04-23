@@ -25,27 +25,7 @@ function callBackend(url, options) {
   return window.fetch(url, opts);
 }
 
-function setNotifications() {
-  const counter = document.querySelector('.js-notification-count');
-  const dropdown = document.querySelector('.js-notification-dropdown');
-  if (!(counter && dropdown)) {
-    return;
-  }
-  callBackend('/notifications/')
-    .then(data => data.json())
-    .then((json) => {
-      counter.textContent = json.notifications.length;
-      dropdown.innerHTML = json.notifications.map(n => `<div class="dropdown-item">${n.title}</div>`).join('\n');
-    });
-}
-
-function prepareNavbar() {
-  clickableNavbarMenu();
-  setNotifications();
-  window.setInterval(setNotifications, 5000);
-}
-
 module.exports = {
   callBackend,
-  prepareNavbar,
+  clickableNavbarMenu,
 };
