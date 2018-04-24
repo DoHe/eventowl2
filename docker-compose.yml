@@ -5,6 +5,9 @@ services:
     environment:
       - EVENTFUL_API_KEY=${EVENTFUL_API_KEY}
       - REDIS_URL=redis://redis:6379/1
+      - SPOTIFY_ID=${SPOTIFY_ID}
+      - SPOTIFY_SECRET=${SPOTIFY_SECRET}
+      - SPOTIFY_URL=${SPOTIFY_URL}
     ports:
     - "8000:8000"
     volumes:
@@ -17,6 +20,9 @@ services:
     - redis
     - postgres
   frontend:
+    environment:
+      - SPOTIFY_ID=${SPOTIFY_ID}
+      - SPOTIFY_URL=${SPOTIFY_URL}
     image: node:8
     volumes:
     - .:/code

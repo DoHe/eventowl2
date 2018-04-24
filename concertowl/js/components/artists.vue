@@ -130,16 +130,14 @@ module.exports = {
       this.importing = true;
       const spotifyUrl = url.parse('https://accounts.spotify.com/authorize');
       spotifyUrl.search = querystring.stringify({
-        client_id: '4674d20a8f804e5d85c8cc13a2791b73',
+        client_id: process.env.SPOTIFY_ID,
         response_type: 'code',
-        redirect_uri: 'http://0.0.0.0:8000/spotify',
+        redirect_uri: process.env.SPOTIFY_URL,
         scope: 'user-library-read user-follow-read playlist-read-private playlist-read-collaborative',
-        state: 'notrandom',
       });
       const spotifyWindow = window.open(url.format(spotifyUrl), '', 'width=500,height=500');
       spotifyWindow.onunload = () => {
         window.setTimeout(() => {
-          console.log(spotifyWindow.location);
           spotifyWindow.close();
         }, 0);
       };

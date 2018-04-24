@@ -8,4 +8,5 @@ urlpatterns = [
     path('artists/<str:artist>/', views.Artists.as_view()),
     path('events/', views.events, name='events'),
     path('notifications/', views.Notifications.as_view(), name='notifications'),
+    path('spotify/', views.Spotify.as_view(), name='spotify'),
 ]

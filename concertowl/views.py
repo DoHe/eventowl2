@@ -5,6 +5,7 @@ from django.shortcuts import render
 from django.views import View
 from django_q.tasks import async as async_q
 
+from concertowl.apis.spotify import add_spotify_artists
 from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications
 from concertowl.models import Event, Artist
 
@@ -59,13 +60,8 @@ class Notifications(View):
 class Spotify(View):
 
     def get(self, request):
-        return JsonResponse({})
-        # if request.GET.get('code') is not None:
-        #     code = request.GET.get('code')
-        #     token_info = spotify_token_from_code(code)
-        #     print(token_info["access_token"])
-        #     print(token_info["refresh_token"]
-        #     spotify_artists.delay(token_info["access_token"], request.user)
-        #     return render(request, 'concertowl/spotify_running.html')
-        #
-        # return render(request, 'concertowl/spotify.html')
+        code = request.GET.get('code')
+        if code is not None:
+            async_q(add_spotify_artists, code, request.user)
+
+        return render(request, 'concertowl/spotify.html')

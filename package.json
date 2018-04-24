@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:sass": "node-sass --recursive concertowl/sass/ --output concertowl/static/ --output-style compressed",
-    "build:js": "browserify -g uglifyify -t vueify -e concertowl/js/index.js -o concertowl/static/bundle.js",
+    "build:js": "browserify -g uglifyify -t vueify -t envify -e concertowl/js/index.js -o concertowl/static/bundle.js",
     "build": "npm run build:js && npm run build:sass",
-    "watch:js": "watchify -t vueify -e concertowl/js/index.js -o concertowl/static/bundle.js -v",
+    "watch:js": "watchify -t vueify -t envify -e concertowl/js/index.js -o concertowl/static/bundle.js -v",
     "watch:sass": "node-sass --recursive --watch concertowl/sass --output concertowl/static/",
     "start": "npm run watch:js & npm run watch:sass"
   },
@@ -23,6 +23,7 @@
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
     "browserify": "^16.2.0",
+    "envify": "^4.1.0",
     "eslint": "^4.18.2",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",

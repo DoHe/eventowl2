@@ -104,16 +104,14 @@ module.exports = {
       this.importing = true;
       var spotifyUrl = url.parse('https://accounts.spotify.com/authorize');
       spotifyUrl.search = querystring.stringify({
-        client_id: '4674d20a8f804e5d85c8cc13a2791b73',
+        client_id: "4674d20a8f804e5d85c8cc13a2791b73",
         response_type: 'code',
-        redirect_uri: 'http://0.0.0.0:8000/spotify',
-        scope: 'user-library-read user-follow-read playlist-read-private playlist-read-collaborative',
-        state: 'notrandom'
+        redirect_uri: "http://0.0.0.0:8000/spotify",
+        scope: 'user-library-read user-follow-read playlist-read-private playlist-read-collaborative'
       });
       var spotifyWindow = window.open(url.format(spotifyUrl), '', 'width=500,height=500');
       spotifyWindow.onunload = function () {
         window.setTimeout(function () {
-          console.log(spotifyWindow.location);
           spotifyWindow.close();
         }, 0);
       };
@@ -139,7 +137,7 @@ if (module.hot) {(function () {  var hotAPI = require("vue-hot-reload-api")
   if (!module.hot.data) {
     hotAPI.createRecord("data-v-76a61d09", __vue__options__)
   } else {
-    hotAPI.rerender("data-v-76a61d09", __vue__options__)
+    hotAPI.reload("data-v-76a61d09", __vue__options__)
   }
 })()}
 },{"../helpers":6,"./artist.vue":1,"querystring":13,"url":14,"vue":17,"vue-hot-reload-api":16,"vueify/lib/insert-css":18}],3:[function(require,module,exports){

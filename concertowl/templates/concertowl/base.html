@@ -1,59 +1,60 @@
 <!DOCTYPE html>
-<!-- eslint-disable-next-line -->
 {% load static %}
 <html>
 
 <head>
-  <title>EventOwl</title>
-  <meta name="description" content="The one stop solution to find everything that is fun around you. Including concerts in your city!"
-  />
-  <meta name="keywords" content="concerts,artists,fun,city,events" />
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
-  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
-  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
-  <link rel="manifest" href="{% static 'site.webmanifest' %}">
-  <link rel="mask-icon" href="{% static 'safari-pinned-tab.svg' %}" color="#5bbad5">
-  <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
-  <meta name="theme-color" content="#ffffff">
-  <link rel="stylesheet" href="{% static 'index.css' %}">
-  <link rel="stylesheet" href="{% static 'fontello.css' %}">
-  <script src="{% static 'bundle.js' %}"></script> {% block extra_header %} {% endblock %}
+    <title>EventOwl</title>
+    <meta name="description"
+          content="The one stop solution to find everything that is fun around you. Including concerts in your city!"
+    />
+    <meta name="keywords" content="concerts,artists,fun,city,events"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'site.webmanifest' %}">
+    <link rel="mask-icon" href="{% static 'safari-pinned-tab.svg' %}" color="#5bbad5">
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="{% static 'browserconfig.xml' %}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="{% static 'index.css' %}">
+    <link rel="stylesheet" href="{% static 'fontello.css' %}">
+    <script src="{% static 'bundle.js' %}"></script>
+    {% block extra_header %} {% endblock %}
 </head>
 
 <body>
-  <nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
+<nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
     <div class="container">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="{% url 'index' %}">
-          <img src="{% static 'favicon-32x32.png' %}" alt="Eventowl" width="28" height="28">
-        </a>
-        <div class="navbar-burger" data-target="mainMenu">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-      <div id="mainMenu" class="navbar-menu">
-        <div class="navbar-start">
-          <a class="navbar-item" href="{% url 'artists' %}">Artists</a>
-          <a class="navbar-item" href="{% url 'events' %}">Events</a>
-        </div>
-        <div class="navbar-end">
-          <div class="navbar-item">
-            <div id="notifications">
-              <notifications :notifications="{{ notifications }}" />
+        <div class="navbar-brand">
+            <a class="navbar-item" href="{% url 'index' %}">
+                <img src="{% static 'favicon-32x32.png' %}" alt="Eventowl" width="28" height="28">
+            </a>
+            <div class="navbar-burger" data-target="mainMenu">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-          </div>
         </div>
-      </div>
+        <div id="mainMenu" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="{% url 'artists' %}">Artists</a>
+                <a class="navbar-item" href="{% url 'events' %}">Events</a>
+            </div>
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div id="notifications">
+                        <notifications :notifications="{{ notifications }}"/>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </nav>
-  <div id="app">
+</nav>
+<div id="app">
     {% block content %} {% endblock %}
-  </div>
+</div>
 </body>
 
 </html>

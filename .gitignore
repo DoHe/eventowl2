@@ -1,12 +1,6 @@
 # Project specific
 db.sqlite3
-media/*
-!media/artist
-media/artist/*
-!media/artist/default.jpg
-!media/event/
-media/event/*
-!media/event/default.jpg
+.env
 
 # JS
 node_modules
