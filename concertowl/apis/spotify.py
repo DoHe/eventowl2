@@ -4,6 +4,8 @@ import requests
 from django_q.tasks import async as async_q
 from spotipy import Spotify
 
+from concertowl.helpers import add_artist
+
 GENERATED_PLAYLISTS = ['spotify', 'spotifydiscover']
 
 SPOTIFY_ID = os.getenv('SPOTIFY_ID')
@@ -22,20 +24,20 @@ def spotify_token_from_code(code):
     return token_info
 
 
-def spotify_artists(token):
+def spotify_artists(token, user):
     spotify_client = Spotify(auth=token)
-    async_q(playlist_artists, spotify_client, hook='concertowl.apis.spotify._got_artists')
-    async_q(saved_artists, spotify_client, hook='concertowl.apis.spotify._got_artists')
-    async_q(followed_artists, spotify_client, hook='concertowl.apis.spotify._got_artists')
+    async_q(playlist_artists, spotify_client, user, hook='concertowl.apis.spotify._got_artists')
+    async_q(saved_artists, spotify_client, user, hook='concertowl.apis.spotify._got_artists')
+    async_q(followed_artists, spotify_client, user, hook='concertowl.apis.spotify._got_artists')
 
 
 def _got_artists(task):
-    print("============", task.func)
-    print(task.result)
-    print(task.func, "===========")
+    artists, user = task.result
+    for artist in artists:
+        async_q(add_artist, artist, user)
 
 
-def playlist_artists(client):
+def playlist_artists(client, user):
     print("Reading artists from playlists...")
     playlists = _all_playlists(client)
     result = set()
@@ -44,27 +46,27 @@ def playlist_artists(client):
         if owner not in GENERATED_PLAYLISTS:
             playlist_content = client.user_playlist(owner, playlist['id'], fields="tracks,next")
             result |= set(_artists_from_playlist(playlist_content, client))
-    return result
+    return result, user
 
 
-def saved_artists(client):
+def saved_artists(client, user):
     print("Reading artists from saved tracks...")
     tracks = client.current_user_saved_tracks()
     result = set(_artists_from_tracks(tracks))
     while tracks['next']:
         tracks = client.next(tracks)
         result |= set(_artists_from_tracks(tracks))
-    return result
+    return result, user
 
 
-def followed_artists(client):
+def followed_artists(client, user):
     print("Reading followed artists...")
     artists = client.current_user_followed_artists()['artists']
     result = {artist['name'] for artist in artists['items']}
     while artists['next']:
         artists = client.next(artists)['artists']
         result |= {artist['name'] for artist in artists['items']}
-    return result
+    return result, user
 
 
 def _all_playlists(client):
@@ -91,4 +93,4 @@ def _artists_from_tracks(tracks):
 
 def add_spotify_artists(code, user):
     token = spotify_token_from_code(code)['access_token']
-    spotify_artists(token)
+    spotify_artists(token, user)

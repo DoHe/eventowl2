@@ -4,10 +4,11 @@ services:
     build: .
     environment:
       - EVENTFUL_API_KEY=${EVENTFUL_API_KEY}
-      - REDIS_URL=redis://redis:6379/1
+      - REDIS_URL=redis://cache:6379/1
       - SPOTIFY_ID=${SPOTIFY_ID}
       - SPOTIFY_SECRET=${SPOTIFY_SECRET}
       - SPOTIFY_URL=${SPOTIFY_URL}
+      - DATABASE_URL=postgres://dbuser:dbpassword@db/postgres
     ports:
     - "8000:8000"
     volumes:
@@ -17,8 +18,8 @@ services:
       bash -c "python3 manage.py runserver 0.0.0.0:8000 &
                python3 manage.py qcluster"
     links:
-    - redis
-    - postgres
+    - cache
+    - db
   frontend:
     environment:
       - SPOTIFY_ID=${SPOTIFY_ID}
@@ -28,7 +29,10 @@ services:
     - .:/code
     working_dir: /code
     command: npm start
-  redis:
+  cache:
     image: redis
-  postgres:
+  db:
     image: postgres
+    environment:
+      POSTGRES_USER: dbuser
+      POSTGRES_PASSWORD: dbpassword

@@ -5,9 +5,9 @@ from django.db import models
 
 class Artist(models.Model):
     name = models.CharField(max_length=200)
-    picture = models.URLField(default=templatetags.static.static('default_artist.jpg'))
+    picture = models.URLField(default=templatetags.static.static('default_artist.jpg'), max_length=500)
     description = models.TextField(blank=True, default="")
-    url = models.URLField(blank=True, default="")
+    url = models.URLField(blank=True, default="", max_length=500)
     subscribers = models.ManyToManyField(User, related_name='subscribers')
 
     def __str__(self):

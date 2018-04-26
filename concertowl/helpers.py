@@ -11,17 +11,18 @@ def get_or_none(model, *args, **kwargs):
 
 
 def add_artist(name, user=None):
-    artist = Artist(name=name)
-    try:
-        description, url, picture = get_wikipedia_description(name)
-        if description:
-            artist.description = description
-        if url:
-            artist.url = url
-        if picture:
-            artist.picture = picture
-    except:
-        pass
+    artist, new = Artist.objects.get_or_create(name=name)
+    if new:
+        try:
+            description, url, picture = get_wikipedia_description(name)
+            if description:
+                artist.description = description
+            if url:
+                artist.url = url
+            if picture:
+                artist.picture = picture
+        except:
+            pass
     artist.save()
     if user:
         artist.subscribers.add(user)
