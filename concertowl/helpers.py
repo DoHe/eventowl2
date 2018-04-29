@@ -11,6 +11,8 @@ def get_or_none(model, *args, **kwargs):
 
 
 def add_artist(name, user=None):
+    if not name:
+        return None
     artist, new = Artist.objects.get_or_create(name=name)
     if new:
         try:
@@ -21,7 +23,7 @@ def add_artist(name, user=None):
                 artist.url = url
             if picture:
                 artist.picture = picture
-        except:
+        except Exception:
             pass
     artist.save()
     if user:

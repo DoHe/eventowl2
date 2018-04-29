@@ -35,7 +35,11 @@ class Event(models.Model):
     artists = models.ManyToManyField(Artist, related_name='artists')
 
     def __str__(self):
-        return "{} at {} on {}".format(str(self.title), str(self.venue), str(self.start_time.strftime("%Y-%m-%d")))
+        return "{} at {} on {}".format(
+            str(self.title),
+            str(self.venue),
+            str(self.start_time.strftime("%Y-%m-%d"))
+        )
 
     def to_json(self):
         return {

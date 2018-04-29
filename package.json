@@ -19,7 +19,7 @@
   "author": "DoHe",
   "homepage": "https://github.com/DoHe/eventowl2#readme",
   "devDependencies": {
-    "babel-core": "^6.26.2",
+    "babel-core": "^6.26.3",
     "babel-preset-env": "^1.6.1",
     "babelify": "^8.0.0",
     "browserify": "^16.2.0",
@@ -33,7 +33,7 @@
     "eslint-plugin-vue": "^4.5.0",
     "eslint_d": "^5.3.0",
     "node-sass": "^4.9.0",
-    "uglifyify": "^4.0.5",
+    "uglifyify": "^5.0.0",
     "vueify": "^9.4.1",
     "watchify": "^3.11.0"
   },

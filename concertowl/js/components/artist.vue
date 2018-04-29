@@ -29,7 +29,7 @@ module.exports = {
   props: ['description', 'url', 'artistName', 'imageUrl'],
   methods: {
     remove() {
-      this.$parent.$emit('remove_artist', this.artistName);
+      this.$emit('removeArtist', this.artistName);
       callBackend(`/artists/${this.artistName}/`, { method: 'delete' });
     },
   },
