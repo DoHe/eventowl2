@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <artist
-      v-for="artist in artistsData.slice(page * perPage, (page + 1) * perPage)"
+      v-for="artist in artistsData.slice((page-1) * perPage, page * perPage)"
       :key="artist.name"
       :artist-name="artist.name"
       :image-url="artist.picture_url"
@@ -39,14 +39,20 @@ module.exports = {
   data() {
     return {
       artistsData: this.artists,
-      page: 0,
+      page: 1,
       perPage: 5,
       showAddArtistModal: false,
     };
   },
   methods: {
     addDefaultArtist(artistName) {
-      this.artistsData.push({ name: artistName, picture_url: '/static/default_artist.jpg' });
+      let i = 0;
+      for (i = 0; i < this.artistsData.length; i += 1) {
+        if (this.artistsData[i].name > artistName) {
+          this.artistsData.splice(i, 0, { name: artistName, picture_url: '/static/default_artist.jpg' });
+          break;
+        }
+      }
     },
     updateArtistInfo(artistInfo) {
       this.artistsData.forEach((artist, index) => {
