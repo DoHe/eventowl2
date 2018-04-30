@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 def session_user(get_response):
     def middleware(request):
-        if not request.user.is_authenticated:
+        if not (request.user.is_authenticated or request.GET.get('uuid')):
             unique_id = request.session.get('id')
             if not unique_id:
                 new = False
@@ -18,7 +18,6 @@ def session_user(get_response):
             else:
                 user = User.objects.get(username=unique_id)
             login(request, user)
-        response = get_response(request)
-        return response
+        return get_response(request)
 
     return middleware

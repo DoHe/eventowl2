@@ -1,3 +1,5 @@
+import uuid
+
 from django import templatetags
 from django.contrib.auth.models import User
 from django.db import models
@@ -64,3 +66,13 @@ class Notification(models.Model):
         j = {'created': self.created.isoformat()}
         j.update(self.event.to_json())
         return j
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, unique=True, on_delete=models.CASCADE, related_name='profile')
+    city = models.CharField(max_length=200)
+    country = models.CharField(max_length=200)
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    def __str__(self):
+        return self.user.username

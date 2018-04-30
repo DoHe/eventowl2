@@ -44,6 +44,9 @@
             </div>
             <div class="navbar-end">
                 <div class="navbar-item">
+                    {{ user.get_username }} ({{ user.profile.city }}, {{ user.profile.country }})
+                </div>
+                <div class="navbar-item">
                     <div id="notifications">
                         <notifications :notifications="{{ notifications }}"/>
                     </div>

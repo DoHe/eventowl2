@@ -1,12 +1,13 @@
+import datetime
 import json
 
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views import View
 from django_q.tasks import async as async_q
 
 from concertowl.apis.spotify import add_spotify_artists
-from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications
+from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications, events_to_ical
 from concertowl.models import Event, Artist
 
 
@@ -14,10 +15,27 @@ def index(request):
     return render(request, 'concertowl/index.html')
 
 
-def events(request):
-    events = [event.to_json() for event in
-              Event.objects.filter(artists__subscribers__id=request.user.id).order_by('-start_time')]
-    return render(request, 'concertowl/events.html', {'events': json.dumps(events)})
+class Events(View):
+    def get(self, request):
+        events = Event.objects.filter(start_time__gte=datetime.date.today())
+        user_uuid = request.GET.get('uuid')
+        format = request.GET.get('format')
+        if user_uuid:
+            if not format:
+                return HttpResponseForbidden("Access forbidden")
+            events.filter(artists__subscribers__profile__uuid=user_uuid)
+        else:
+            events.filter(artists__subscribers__id=request.user.id)
+        events.order_by('start_time')
+
+        if format == 'ical':
+            response = HttpResponse(events_to_ical(events), content_type='text/calendar')
+            response['Filename'] = 'events.ics'
+            response['Content-Disposition'] = 'attachment; filename=events.ics'
+            return response
+
+        json_events = [event.to_json() for event in events]
+        return render(request, 'concertowl/events.html', {'events': json.dumps(json_events)})
 
 
 class Artists(View):

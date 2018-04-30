@@ -99,7 +99,7 @@ def get_events_for_artists(artists, locations):
     with Pool(math.ceil(len(artists) / 4)) as pool:
         collected_events += pool.map(_get_events, artists)
     for event in _unique_events(collected_events):
-        location = '{}, {}'.format(event['city'].lower(), event['country'].lower())
+        location = '{},{}'.format(event['city'].lower(), event['country'].lower())
         if location in locations:
             yield event
 
