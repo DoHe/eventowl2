@@ -29,7 +29,8 @@ DEBUG = True
 ALLOWED_HOSTS = [
     'local.eventowl.com',
     '127.0.0.1',
-    '0.0.0.0'
+    '0.0.0.0',
+    'eventowl2.herokuapp.com'
 ]
 
 # Application definition
