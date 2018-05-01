@@ -5,7 +5,46 @@
     <h1 class="title">
       Change your preferences
     </h1>
-    <preferences :country="{{ country }}"/>
+    
+    <div class="field is-horizontal">
+      <div class="field-label is-normal">
+        <label class="label">Location</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control is-expanded">
+            <div class="select">
+              <select>
+                {% for c in countries %} 
+                <option {% if c|lower == country|lower %}selected{% endif %}>{{ c }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <div class="control">
+            <input class="input" value="{{ city|title }}" type="city" placeholder="Berlin">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">E-Mail</label>
+      <div class="control">
+        <input class="input" value="{{ email }}" type="email" placeholder="example@email.com">
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input class="input" value="{{ username }}" type="username" placeholder="Jane Doe">
+      </div>
+    </div>
   </div>
+</div>
 </section>
 {% endblock content %}

@@ -92,5 +92,7 @@ class UserPreferences(View):
             'city': request.user.profile.city,
             'country': request.user.profile.country,
             'email': request.user.email,
-            'username': request.user.username.replace('-', '')
+            'username': request.user.username,
+            'countries': ['Germany', 'USA'],
+            'cities': ['Berlin', 'New York']
         })
