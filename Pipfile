@@ -17,6 +17,8 @@ spotipy = "*"
 Django = "*"
 Pillow = "*"
 whitenoise = "*"
+django-ipware = "*"
+"maxminddb-geolite2" = "*"
 
 [dev-packages]
 "autopep8" = "*"

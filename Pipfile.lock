@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "a50277607279a3d9ef0f0aec9abd62680ea326ee3cb6f91f8017c86b09d3d191"
+            "sha256": "877f4c03ea7990ff9d1634b8d20109845c6bfffd1a6aa195f6ea6d3d5d0f5f90"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -59,6 +59,13 @@
             "index": "pypi",
             "version": "==2.0.4"
         },
+        "django-ipware": {
+            "hashes": [
+                "sha256:a7c7a8fd019dbdc9c357e6e582f65034e897572fc79a7e467674efa8aef9d00b"
+            ],
+            "index": "pypi",
+            "version": "==2.1.0"
+        },
         "django-picklefield": {
             "hashes": [
                 "sha256:57e4349c7f75eab08fe7ceb11e7135644fdf771e2777a754db4f07e5c63c191f",
@@ -104,6 +111,19 @@
                 "sha256:8c7309c718f94b3a625cb648ace320157ad16ff131ae0af362c9f21b80ef6ec4"
             ],
             "version": "==2.6"
+        },
+        "maxminddb": {
+            "hashes": [
+                "sha256:972399b6d08b4cbb7889f2d2489266d18811c5ef6109cc52eb28de4102bbc4be"
+            ],
+            "version": "==1.3.0"
+        },
+        "maxminddb-geolite2": {
+            "hashes": [
+                "sha256:b9bd9f07aa63ebfac896380b26bf122a4fddfe003ab0b677b8064f229de88051"
+            ],
+            "index": "pypi",
+            "version": "==2018.308"
         },
         "pillow": {
             "hashes": [

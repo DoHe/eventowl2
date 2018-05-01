@@ -22,9 +22,15 @@ def _performers(event):
     return [p['name'].lower() for p in _as_list(event['performers']['performer'])]
 
 
+def _as_https(u):
+    if u.startswith('http:'):
+        return u.replace('http:', 'https:', 1)
+    return u
+
+
 def _event(api_event, performers):
     return {
-        'picture': api_event['image']['medium']['url'] if api_event['image'] else None,
+        'picture': _as_https(api_event['image']['medium']['url']) if api_event['image'] else None,
         'city': api_event['city_name'],
         'country': api_event['country_name'],
         'title': api_event['title'],
@@ -32,7 +38,7 @@ def _event(api_event, performers):
         'end_time': api_event['stop_time'],
         'venue': api_event['venue_name'],
         'address': api_event['venue_address'],
-        'ticket_url': api_event['url'],
+        'ticket_url': _as_https(api_event['url']),
         'artists': performers
     }
 
