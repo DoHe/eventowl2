@@ -9,6 +9,7 @@ services:
       - SPOTIFY_SECRET=${SPOTIFY_SECRET}
       - SPOTIFY_URL=${SPOTIFY_URL}
       - DATABASE_URL=postgres://dbuser:dbpassword@db/postgres
+      - DEBUG=true
     ports:
     - "8000:8000"
     volumes:
