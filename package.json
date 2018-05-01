@@ -10,7 +10,8 @@
     "build": "NODE_ENV=production npm run build:js && npm run build:sass",
     "watch:js": "watchify -t vueify -t envify -e concertowl/js/index.js -o concertowl/static/bundle.js -v",
     "watch:sass": "node-sass --recursive --watch concertowl/sass --output concertowl/static/",
-    "start": "npm run watch:js & npm run watch:sass"
+    "start": "npm run watch:js & npm run watch:sass",
+    "postinstall": "npm run build"
   },
   "repository": {
     "type": "git",
@@ -49,5 +50,8 @@
   },
   "browser": {
     "vue": "vue/dist/vue.common.js"
+  },
+  "engines": {
+    "node": "8.11.1"
   }
 }
