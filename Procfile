@@ -1,2 +1,2 @@
-web: gunicorn eventowl.wsgi --log-file - -c serverconf/gunicorn.conf
+web: gunicorn eventowl.wsgi --log-file - -c gunicorn.conf
 worker: python3 manage.py qcluster
