@@ -41,12 +41,14 @@
                 </div>
                 <div class="navbar-end">
                     <div class="navbar-item">
+                        <a href="{% url 'user_preferences' %}">
                         {% if user.profile.manual %}
                             {{ user.get_username }}
                         {% else %}
                             Anonymous
                         {% endif %}
                         ({{ user.profile.city|title }}, {{user.profile.country|title}})
+                        </a>
                     </div>
                     <div class="navbar-item">
                         <div id="notifications">

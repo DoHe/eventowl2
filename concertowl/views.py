@@ -83,3 +83,14 @@ class Spotify(View):
             async_q(add_spotify_artists, code, request.user)
 
         return render(request, 'concertowl/spotify.html')
+
+
+class UserPreferences(View):
+
+    def get(self, request):
+        return render(request, 'concertowl/user_preferences.html', {
+            'city': request.user.profile.city,
+            'country': request.user.profile.country,
+            'email': request.user.email,
+            'username': request.user.username.replace('-', '')
+        })

@@ -9,4 +9,5 @@ urlpatterns = [
     path('events/', views.Events.as_view(), name='events'),
     path('notifications/', views.Notifications.as_view(), name='notifications'),
     path('spotify/', views.Spotify.as_view(), name='spotify'),
+    path('user_preferences/', views.UserPreferences.as_view(), name='user_preferences'),
 ]
