@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "877f4c03ea7990ff9d1634b8d20109845c6bfffd1a6aa195f6ea6d3d5d0f5f90"
+            "sha256": "07b846748980eeb8c57608ba14b0053c57547faefaf37cd2b2f6b5a15eddef05"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -58,6 +58,10 @@
             ],
             "index": "pypi",
             "version": "==2.0.4"
+        },
+        "django-cities-light": {
+            "git": "https://github.com/wswld/django-cities-light.git",
+            "ref": "autoslug-fix"
         },
         "django-ipware": {
             "hashes": [

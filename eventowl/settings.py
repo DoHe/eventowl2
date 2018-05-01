@@ -15,6 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_q',
+    'cities_light'
 ]
 
 MIDDLEWARE = [
@@ -98,3 +99,6 @@ Q_CLUSTER = {
     'name': 'eventowl2',
     'django_redis': 'default'
 }
+
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['de', 'en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['DE', 'UK', 'US']

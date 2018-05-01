@@ -22,14 +22,15 @@ def session_user(get_response):
                     unique_id = str(uuid.uuid4())
                     user, new = User.objects.get_or_create(username=unique_id)
                 user.save()
-                city = country = ''
+                country = 'germany'
+                city = 'berlin'
                 ip, is_routable = get_client_ip(request)
-                if is_routable or True:
+                if is_routable:
                     ip_info = GEOIP_READER.get(ip)
                     if ip_info is not None:
-                        city = ip_info['city']
-                        country = ip_info['country']
-                UserProfile.objects.create(user=user, city=city, country=country).save()
+                        city = ip_info['city']['names']['en']
+                        country = ip_info['country']['names']['en']
+                UserProfile.objects.create(user=user, city=city.lower(), country=country.lower()).save()
                 request.session['id'] = unique_id
 
             login(request, user)
