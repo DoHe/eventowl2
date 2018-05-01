@@ -46,12 +46,18 @@ module.exports = {
   },
   methods: {
     addDefaultArtist(artistName) {
+      const artistInfo = { name: artistName, picture_url: '/static/default_artist.jpg' };
+      let added = false;
       let i = 0;
       for (i = 0; i < this.artistsData.length; i += 1) {
         if (this.artistsData[i].name > artistName) {
-          this.artistsData.splice(i, 0, { name: artistName, picture_url: '/static/default_artist.jpg' });
+          this.artistsData.splice(i, 0, artistInfo);
+          added = true;
           break;
         }
+      }
+      if (!added) {
+        this.artistsData.push(artistInfo);
       }
     },
     updateArtistInfo(artistInfo) {

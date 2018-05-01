@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build:sass": "node-sass --recursive concertowl/sass/ --output concertowl/static/ --output-style compressed",
-    "build:js": "browserify -g uglifyify -t vueify -t envify -e concertowl/js/index.js -o concertowl/static/bundle.js",
-    "build": "NODE_ENV=production npm run build:js && npm run build:sass",
+    "build:sass": "NODE_ENV=production node-sass --recursive concertowl/sass/ --output concertowl/static/ --output-style compressed",
+    "build:js": "NODE_ENV=production browserify -g uglifyify -t vueify -t envify -e concertowl/js/index.js -o concertowl/static/bundle.js",
+    "build": "npm run build:js && npm run build:sass",
     "watch:js": "watchify -t vueify -t envify -e concertowl/js/index.js -o concertowl/static/bundle.js -v",
     "watch:sass": "node-sass --recursive --watch concertowl/sass --output concertowl/static/",
     "start": "npm run watch:js & npm run watch:sass"

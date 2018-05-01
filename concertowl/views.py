@@ -19,16 +19,16 @@ class Events(View):
     def get(self, request):
         events = Event.objects.filter(start_time__gte=datetime.date.today())
         user_uuid = request.GET.get('uuid')
-        format = request.GET.get('format')
+        event_format = request.GET.get('format')
         if user_uuid:
-            if not format:
+            if not event_format:
                 return HttpResponseForbidden("Access forbidden")
             events = events.filter(artists__subscribers__profile__uuid=user_uuid)
         else:
             events = events.filter(artists__subscribers__id=request.user.id)
         events = events.order_by('start_time')
 
-        if format == 'ical':
+        if event_format == 'ical':
             response = HttpResponse(events_to_ical(events), content_type='text/calendar')
             response['Filename'] = 'events.ics'
             response['Content-Disposition'] = 'attachment; filename=events.ics'
