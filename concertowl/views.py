@@ -23,10 +23,10 @@ class Events(View):
         if user_uuid:
             if not format:
                 return HttpResponseForbidden("Access forbidden")
-            events.filter(artists__subscribers__profile__uuid=user_uuid)
+            events = events.filter(artists__subscribers__profile__uuid=user_uuid)
         else:
-            events.filter(artists__subscribers__id=request.user.id)
-        events.order_by('start_time')
+            events = events.filter(artists__subscribers__id=request.user.id)
+        events = events.order_by('start_time')
 
         if format == 'ical':
             response = HttpResponse(events_to_ical(events), content_type='text/calendar')

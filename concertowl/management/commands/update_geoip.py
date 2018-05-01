@@ -24,4 +24,6 @@ class Command(BaseCommand):
     help = 'Update geoip database'
 
     def handle(self, *args, **options):
+        print("Downloading geoip database...")
         download()
+        print("Done")
