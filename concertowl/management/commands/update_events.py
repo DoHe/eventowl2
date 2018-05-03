@@ -11,5 +11,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         artists = [artist.name for artist in Artist.objects.all()]
         locations = {'{},{}'.format(u.city.lower(), u.country.lower()) for u in UserProfile.objects.all()}
-        for event in get_events_for_artists(artists, locations):
+        print("Getting events for {} artists in {} locations...".format(len(artists), len(locations)))
+        events = get_events_for_artists(artists, locations)
+        print("Adding {} events...".format(len(events)))
+        for event in events:
             add_event(event)
+        print("Done")
