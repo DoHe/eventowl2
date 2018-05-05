@@ -25,7 +25,32 @@ function callBackend(url, options) {
   return window.fetch(url, opts);
 }
 
+function filterCities(cities, citySelect, countrySelect) {
+  let i;
+  for (i = citySelect.options.length - 1; i >= 0; i -= 1) {
+    citySelect.remove(i);
+  }
+
+  const country = countrySelect.value.toLowerCase();
+  cities.forEach((city) => {
+    if (city.dataset.country.toLowerCase() === country) {
+      citySelect.add(city);
+    }
+  });
+}
+
+function settingsForm() {
+  const citySelect = document.querySelector('.js-city-select');
+  const countrySelect = document.querySelector('.js-country-select');
+  if (citySelect && countrySelect) {
+    const cities = nodeListToArray(citySelect.children);
+    filterCities(cities, citySelect, countrySelect);
+    countrySelect.addEventListener('change', () => filterCities(cities, citySelect, countrySelect));
+  }
+}
+
 module.exports = {
   callBackend,
   clickableNavbarMenu,
+  settingsForm,
 };

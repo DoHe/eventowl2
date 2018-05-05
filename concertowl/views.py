@@ -5,10 +5,12 @@ from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views import View
 from django_q.tasks import async as async_q
+from cities_light.models import City, Country
 
 from concertowl.apis.spotify import add_spotify_artists
 from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications, events_to_ical
 from concertowl.models import Event, Artist
+from concertowl.forms import UserForm
 
 
 def index(request):
@@ -87,12 +89,26 @@ class Spotify(View):
 
 class UserPreferences(View):
 
-    def get(self, request):
+    def _render(self, request, errors=None):
         return render(request, 'concertowl/user_preferences.html', {
             'city': request.user.profile.city,
             'country': request.user.profile.country,
             'email': request.user.email,
             'username': request.user.username,
-            'countries': ['Germany', 'USA'],
-            'cities': ['Berlin', 'New York']
+            'password': request.user.password,
+            'countries': Country.objects.all(),
+            'cities': City.objects.all(),
+            'errors': errors if errors else {},
+            'form': UserForm({
+                'email': request.user.email,
+                'username': request.user.username,
+                'password': request.user.password,
+                'city': request.user.profile.city.lower(),
+            })
         })
+
+    def get(self, request):
+        return self._render(request)
+
+    def post(self, request):
+        return self._render(request)

@@ -1,50 +1,108 @@
 {% extends 'concertowl/base.html' %}
+{% load widget_tweaks %}
 {% block content %}
 <section class="section">
   <div class="container">
     <h1 class="title">
       Change your preferences
     </h1>
-    
-    <div class="field is-horizontal">
-      <div class="field-label is-normal">
-        <label class="label">Location</label>
+
+    <form method="post">
+      {% csrf_token %}
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Location</label>
+        </div>
+        <div class="field-body">
+          <div class="field is-narrow">
+            <p class="control">
+              <div class="select">
+                <select class="js-country-select">
+                  {% for c in countries %} 
+                  <option {% if c.name|lower == country|lower %}selected{% endif %}>{{ c.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </p>
+          </div>
+          <div class="field is-narrow">
+            <p class="control">
+              <div class="select">
+                {{ form.city|add_class:"js-city-select2" }}
+              </div>
+            </p>
+          </div>
+          <div class="field is-narrow">
+            <p class="control">
+              <div class="select">
+                <select class="js-city-select">
+                  {% for c in cities %} 
+                  <option 
+                  data-country="{{c.country.name }}"
+                  {% if c.name|lower == city|lower %}selected{% endif %}>
+                    {{ c.name }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
+            </p>
+          </div>
+        </div>
       </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control is-expanded">
-            <div class="select">
-              <select>
-                {% for c in countries %} 
-                <option {% if c|lower == country|lower %}selected{% endif %}>{{ c }}</option>
-                {% endfor %}
-              </select>
+
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Username</label>
+        </div>
+        <div class="field-body">
+          <div class="field is-narrow">
+            <div class="control">
+              {{ form.username|add_class:"input" }}
             </div>
           </div>
         </div>
-
-        <div class="field">
-          <div class="control">
-            <input class="input" value="{{ city|title }}" type="city" placeholder="Berlin">
+      </div>
+      
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">E-Mail</label>
+        </div>
+        <div class="field-body">
+          <div class="field is-narrow">
+            <div class="control">
+              {{ form.email|add_class:"input" }}
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="label">E-Mail</label>
-      <div class="control">
-        <input class="input" value="{{ email }}" type="email" placeholder="example@email.com">
+      <div class="field is-horizontal">
+        <div class="field-label is-normal">
+          <label class="label">Password</label>
+        </div>
+        <div class="field-body">
+          <div class="field is-narrow">
+            <div class="control">
+              {{ form.password|add_class:"input" }}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <div class="field">
-      <label class="label">Username</label>
-      <div class="control">
-        <input class="input" value="{{ username }}" type="username" placeholder="Jane Doe">
+      <div class="field is-horizontal">
+        <div class="field-label">
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <button type="submit" class="button is-primary">
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
+    </form>
 </div>
 </section>
 {% endblock content %}

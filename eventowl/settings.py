@@ -15,7 +15,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_q',
-    'cities_light'
+    'cities_light',
+    'widget_tweaks'
 ]
 
 MIDDLEWARE = [

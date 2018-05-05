@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "07b846748980eeb8c57608ba14b0053c57547faefaf37cd2b2f6b5a15eddef05"
+            "sha256": "e8971269111db8cafe4d8fcb6310b5565912a6034f449da776ca8784b818cc6d"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -53,11 +53,11 @@
         },
         "django": {
             "hashes": [
-                "sha256:2d8b9eed8815f172a8e898678ae4289a5e9176bc08295676eff4228dd638ea61",
-                "sha256:d81a1652963c81488e709729a80b510394050e312f386037f26b54912a3a10d0"
+                "sha256:26b34f4417aa38d895b6b5307177b51bc3f4d53179d8696a5c19dcb50582523c",
+                "sha256:71d1a584bb4ad2b4f933d07d02c716755c1394feaac1ce61ce37843ac5401092"
             ],
             "index": "pypi",
-            "version": "==2.0.4"
+            "version": "==2.0.5"
         },
         "django-cities-light": {
             "git": "https://github.com/wswld/django-cities-light.git",
@@ -92,6 +92,14 @@
             ],
             "index": "pypi",
             "version": "==4.9.0"
+        },
+        "django-widget-tweaks": {
+            "hashes": [
+                "sha256:a31c8a2b88af98dba6471db4722a416d1c643c87efecf9a7f17f983a2a553632",
+                "sha256:f9961162c8ed272162e22e5877d29c7780476970441dce605118ef66da685e71"
+            ],
+            "index": "pypi",
+            "version": "==1.4.2"
         },
         "gunicorn": {
             "hashes": [
@@ -310,8 +318,6 @@
         },
         "pycodestyle": {
             "hashes": [
-                "sha256:1ec08a51c901dfe44921576ed6e4c1f5b7ecbad403f871397feedb5eb8e4fa14",
-                "sha256:5ff2fbcbab997895ba9ead77e1b38b3ebc2e5c3b8a6194ef918666e4c790a00e",
                 "sha256:682256a5b318149ca0d2a9185d365d8864a768a28db66a84a2ea946bcc426766",
                 "sha256:6c4245ade1edfad79c3446fadfc96b0de2759662dc29d07d80a6f27ad1ca6ba9"
             ],

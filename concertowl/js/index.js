@@ -1,12 +1,11 @@
 const Vue = require('vue');
 
-const { clickableNavbarMenu } = require('./helpers');
+const { clickableNavbarMenu, settingsForm } = require('./helpers');
 const Artists = require('./components/artists.vue');
 const Events = require('./components/events.vue');
 const Notifications = require('./components/notifications.vue');
 
 document.addEventListener('DOMContentLoaded', () => {
-  clickableNavbarMenu();
   new Vue({
     el: '#app',
     components: { Artists, Events },
@@ -16,4 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#notifications',
     components: { Notifications },
   });
+
+  clickableNavbarMenu();
+  settingsForm();
 });
