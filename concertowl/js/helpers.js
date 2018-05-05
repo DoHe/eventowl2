@@ -33,7 +33,8 @@ function filterCities(cities, citySelect, countrySelect) {
 
   const country = countrySelect.value.toLowerCase();
   cities.forEach((city) => {
-    if (city.dataset.country.toLowerCase() === country) {
+    const cityCountry = city.value.split('_')[1];
+    if (cityCountry.toLowerCase() === country) {
       citySelect.add(city);
     }
   });

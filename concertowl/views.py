@@ -5,7 +5,7 @@ from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views import View
 from django_q.tasks import async as async_q
-from cities_light.models import City, Country
+from django.contrib.auth.hashers import check_password
 
 from concertowl.apis.spotify import add_spotify_artists
 from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications, events_to_ical
@@ -89,26 +89,39 @@ class Spotify(View):
 
 class UserPreferences(View):
 
-    def _render(self, request, errors=None):
-        return render(request, 'concertowl/user_preferences.html', {
-            'city': request.user.profile.city,
-            'country': request.user.profile.country,
-            'email': request.user.email,
-            'username': request.user.username,
-            'password': request.user.password,
-            'countries': Country.objects.all(),
-            'cities': City.objects.all(),
-            'errors': errors if errors else {},
-            'form': UserForm({
-                'email': request.user.email,
-                'username': request.user.username,
-                'password': request.user.password,
-                'city': request.user.profile.city.lower(),
-            })
-        })
+    def _default_data(self, user):
+        return {
+            'email': user.email,
+            'username': user.username if user.profile.manual else '',
+            'password': user.password,
+            'city': '{}_{}'.format(user.profile.city.lower(), user.profile.country.lower()),
+            'country': user.profile.country
+        }
 
     def get(self, request):
-        return self._render(request)
+        form = UserForm(self._default_data(request.user))
+        return render(request, 'concertowl/user_preferences.html', {'form': form})
 
     def post(self, request):
-        return self._render(request)
+        default_data = self._default_data(request.user)
+        form = UserForm(request.POST, initial=default_data)
+        if form.is_valid():
+            save_user = False
+            save_profile = False
+            for field in form.changed_data:
+                new_value = request.POST[field]
+                if field in ['city', 'country']:
+                    setattr(request.user.profile, field, new_value.split('_')[0])
+                    save_profile = True
+                elif field == 'password':
+                    if new_value and not check_password(new_value, default_data['password']):
+                        request.user.set_password(new_value)
+                        save_user = True
+                else:
+                    setattr(request.user, field, request.POST[field])
+                    save_user = True
+            if save_profile:
+                request.user.profile.save()
+            if save_user:
+                request.user.save()
+        return render(request, 'concertowl/user_preferences.html', {'form': form})

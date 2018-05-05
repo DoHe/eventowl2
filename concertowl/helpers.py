@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 
 import icalendar
+from cities_light.models import City, Country
+from django.core.cache import cache
 
 from concertowl.apis.eventful import get_events_for_artist
 from concertowl.apis.wikipedia import get_wikipedia_description
@@ -90,3 +92,19 @@ def events_to_ical(events):
         ical_event['dtstamp'] = datetime.now()
         cal.add_component(ical_event)
     return cal.to_ical()
+
+
+def _cached_all(key, model, timeout=60 * 60 * 12):
+    val = cache.get(key)
+    if val is None:
+        val = model.objects.all()
+        cache.set(key, val, timeout)
+    return val
+
+
+def cities():
+    return _cached_all('city', City)
+
+
+def countries():
+    return _cached_all('country', Country)

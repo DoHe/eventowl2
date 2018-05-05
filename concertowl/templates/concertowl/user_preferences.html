@@ -17,33 +17,14 @@
           <div class="field is-narrow">
             <p class="control">
               <div class="select">
-                <select class="js-country-select">
-                  {% for c in countries %} 
-                  <option {% if c.name|lower == country|lower %}selected{% endif %}>{{ c.name }}</option>
-                  {% endfor %}
-                </select>
+                {{ form.country|add_class:"js-country-select" }}
               </div>
             </p>
           </div>
           <div class="field is-narrow">
             <p class="control">
               <div class="select">
-                {{ form.city|add_class:"js-city-select2" }}
-              </div>
-            </p>
-          </div>
-          <div class="field is-narrow">
-            <p class="control">
-              <div class="select">
-                <select class="js-city-select">
-                  {% for c in cities %} 
-                  <option 
-                  data-country="{{c.country.name }}"
-                  {% if c.name|lower == city|lower %}selected{% endif %}>
-                    {{ c.name }}
-                  </option>
-                  {% endfor %}
-                </select>
+                {{ form.city|add_class:"js-city-select" }}
               </div>
             </p>
           </div>
