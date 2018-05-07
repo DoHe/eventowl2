@@ -98,7 +98,8 @@ GEOIP_PATH = os.path.join(BASE_DIR, 'db.mmdb')
 
 Q_CLUSTER = {
     'name': 'eventowl2',
-    'django_redis': 'default'
+    'django_redis': 'default',
+    'workers': 10,
 }
 
 CITIES_LIGHT_TRANSLATION_LANGUAGES = ['de', 'en']
