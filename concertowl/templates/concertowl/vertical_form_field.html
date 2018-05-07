@@ -1,0 +1,16 @@
+{% load widget_tweaks %}
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label class="label">{{label}}</label>
+  </div>
+  <div class="field-body">
+    <div class="field is-narrow">
+      <div class="control">
+        {{ form_field|add_class:"input" }}
+      </div>
+      {% for error in form_field.errors %}
+      <p class="help is-danger">{{ error|escape }}</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>

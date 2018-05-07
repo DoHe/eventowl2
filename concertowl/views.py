@@ -1,16 +1,18 @@
 import datetime
 import json
 
-from django.http import JsonResponse, HttpResponse, HttpResponseForbidden
+from django.contrib.auth import login
+from django.contrib.auth.hashers import check_password
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django_q.tasks import async as async_q
-from django.contrib.auth.hashers import check_password
 
 from concertowl.apis.spotify import add_spotify_artists
-from concertowl.helpers import get_or_none, add_artist, add_events, user_notifications, events_to_ical
-from concertowl.models import Event, Artist
 from concertowl.forms import UserForm
+from concertowl.helpers import (add_artist, add_events, events_to_ical,
+                                get_or_none, user_notifications)
+from concertowl.models import Artist, Event
 
 
 def index(request):
@@ -105,9 +107,11 @@ class UserPreferences(View):
     def post(self, request):
         default_data = self._default_data(request.user)
         form = UserForm(request.POST, initial=default_data)
+        save_user = False
+        save_profile = False
+        success = ""
         if form.is_valid():
-            save_user = False
-            save_profile = False
+            success = "Nothing changed"
             for field in form.changed_data:
                 new_value = request.POST[field]
                 if field in ['city', 'country']:
@@ -119,9 +123,15 @@ class UserPreferences(View):
                         save_user = True
                 else:
                     setattr(request.user, field, request.POST[field])
+                    if field == 'username':
+                        request.user.profile.manual = True
+                        save_profile = True
                     save_user = True
             if save_profile:
                 request.user.profile.save()
             if save_user:
                 request.user.save()
-        return render(request, 'concertowl/user_preferences.html', {'form': form})
+                login(request, request.user)
+        if save_profile or save_user:
+            success = "Changes applied!"
+        return render(request, 'concertowl/user_preferences.html', {'form': form, 'success': success})

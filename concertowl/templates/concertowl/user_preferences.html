@@ -6,6 +6,10 @@
     <h1 class="title">
       Change your preferences
     </h1>
+    <h2 class="subtitle">
+      Here you can change your settings, especially your event location! <br>
+      If you provide a password and e-mail address you can also synchronize your artists and events across browsers.
+    </h2>
 
     <form method="post">
       {% csrf_token %}
@@ -30,45 +34,24 @@
           </div>
         </div>
       </div>
-
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Username</label>
-        </div>
-        <div class="field-body">
-          <div class="field is-narrow">
-            <div class="control">
-              {{ form.username|add_class:"input" }}
-            </div>
-          </div>
-        </div>
-      </div>
       
-      <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">E-Mail</label>
-        </div>
-        <div class="field-body">
-          <div class="field is-narrow">
-            <div class="control">
-              {{ form.email|add_class:"input" }}
-            </div>
-          </div>
-        </div>
-      </div>
+      {% include "concertowl/vertical_form_field.html" with label="Username" form_field=form.username %}
+      {% include "concertowl/vertical_form_field.html" with label="E-Mail" form_field=form.email %}
+      {% include "concertowl/vertical_form_field.html" with label="Password" form_field=form.password %}
 
+      {% if success %}
       <div class="field is-horizontal">
-        <div class="field-label is-normal">
-          <label class="label">Password</label>
+        <div class="field-label">
         </div>
         <div class="field-body">
-          <div class="field is-narrow">
+          <div class="field">
             <div class="control">
-              {{ form.password|add_class:"input" }}
+              <p class="help is-success">{{success}}</p>
             </div>
           </div>
         </div>
       </div>
+      {% endif %}
 
       <div class="field is-horizontal">
         <div class="field-label">
