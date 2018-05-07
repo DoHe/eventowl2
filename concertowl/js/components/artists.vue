@@ -40,7 +40,7 @@ module.exports = {
     return {
       artistsData: this.artists,
       page: 1,
-      perPage: 5,
+      perPage: 50,
       showAddArtistModal: false,
     };
   },

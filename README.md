@@ -1,11 +1,13 @@
 # eventowl2
 
-## Running
+## Run
 
-### Frontend
-`npm start`
+`docker-compose up`
 
-### Backend
-* Django: `EVENTFUL_API_KEY="SECRET" python manage.py runserver`
-* Cluster: `EVENTFUL_API_KEY="SECRET" python manage.py qcluster`
-* Monitor: `python manage.py qmonitor`
+## Todos
+
+* Images too big
+* Hide text on mobile
+* Settings error/success
+* Spotify progress
+* New account howto
