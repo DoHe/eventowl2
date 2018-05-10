@@ -46,6 +46,7 @@
   "dependencies": {
     "bulma": "^0.7.1",
     "js-cookie": "^2.2.0",
+    "raven-js": "^3.24.2",
     "vue": "^2.5.16"
   },
   "browser": {

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 {% load static %}
-{% load raven %}
 <html>
 
 <head>
@@ -64,7 +63,6 @@
     <div id="app">
         {% block content %} {% endblock %}
     </div>
-    <script>Raven.config('{% sentry_public_dsn %}').install()</script>
 </body>
 
 </html>

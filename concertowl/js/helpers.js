@@ -1,4 +1,5 @@
 const Cookies = require('js-cookie');
+const Raven = require('raven-js');
 
 
 function nodeListToArray(nodeList) {
@@ -25,7 +26,12 @@ function callBackend(url, options) {
   return window.fetch(url, opts);
 }
 
+function registerSentry() {
+  Raven.config(process.env.SENTRY_PUBLIC_DSN).install();
+}
+
 module.exports = {
   callBackend,
   clickableNavbarMenu,
+  registerSentry,
 };
