@@ -3,7 +3,7 @@
     <div class="delete is-pulled-right" @click="remove"/>
     <article class="media">
       <figure class="media-left">
-        <p class="image is-96x96">
+        <p class="image is-96x96 is-square">
           <img :src="imageUrl">
         </p>
       </figure>

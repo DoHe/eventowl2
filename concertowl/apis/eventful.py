@@ -122,13 +122,13 @@ def get_events_for_artists(artists, locations):
     return _filter_events(_unique_collected_events(collected_events), locations)
 
 
-def _add_events(events):
-    for event in events:
+def _add_events(task):
+    for event in task.result:
         add_event(event)
 
 
 def add_events_for_artists(artists, locations):
-    for artists_part in split_parts(artists, min(len(artists), 10)):
+    for artists_part in split_parts(artists, 10):
         async_q(_get_events_for_locations, artists, locations, hook='concertowl.apis.eventful._add_events')
 
 

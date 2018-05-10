@@ -11,6 +11,11 @@ class UserForm(forms.Form):
     email = forms.EmailField(required=False)
     password = forms.CharField(widget=forms.PasswordInput(), required=False)
 
+    def _clean_no_duplication(self, data, field):
+        if data and self.initial and field in self.changed_data and get_or_none(User, **{field: data}):
+            raise forms.ValidationError("{} already exists".format(field.title()))
+        return data
+
     def _clean_no_delete(self, field):
         data = self.cleaned_data[field]
         if self.initial.get(field) and not data:
@@ -21,13 +26,12 @@ class UserForm(forms.Form):
         return self._clean_no_delete('password')
 
     def clean_username(self):
-        return self._clean_no_delete('username')
+        data = self._clean_no_delete('username')
+        return self._clean_no_duplication(data, 'username')
 
     def clean_email(self):
         data = self._clean_no_delete('email')
-        if data and self.initial and 'email' in self.changed_data and get_or_none(User, email=data):
-            raise forms.ValidationError("E-mail already exists")
-        return data
+        return self._clean_no_duplication(data, 'email')
 
     def clean(self):
         cleaned_data = super().clean()

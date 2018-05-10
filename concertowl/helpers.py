@@ -90,4 +90,6 @@ def location(city, country):
 
 
 def split_parts(iterable, num_parts):
-    return [iterable[i::num_parts] for i in range(num_parts)]
+    li = list(iterable)
+    num_parts = min(num_parts, len(li))
+    return [li[i::num_parts] for i in range(num_parts)]
