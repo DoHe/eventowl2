@@ -1,16 +1,20 @@
 import os
+from collections import defaultdict
 
 import requests
 from django_q.tasks import async as async_q
 from spotipy import Spotify
 
-from concertowl.helpers import add_artist
+from concertowl.apis.eventful import add_events_for_artists
+from concertowl.helpers import add_artist, location
 
 GENERATED_PLAYLISTS = ['spotify', 'spotifydiscover']
 
 SPOTIFY_ID = os.getenv('SPOTIFY_ID')
 SPOTIFY_SECRET = os.getenv('SPOTIFY_SECRET')
 SPOTIFY_URL = os.getenv('SPOTIFY_URL')
+
+COUNTS = defaultdict(int)
 
 
 def spotify_token_from_code(code):
@@ -34,7 +38,12 @@ def spotify_artists(token, user):
 def _got_artists(task):
     artists, user = task.result
     for artist in artists:
-        async_q(add_artist, artist, user)
+        add_artist(artist, user)
+    add_events_for_artists(artists, location(user.profile.city, user.profile.country))
+    COUNTS[user.id] += 1
+    if COUNTS[user.id] == 3:
+        user.profile.spotify_import_running = False
+        user.profile.save()
 
 
 def playlist_artists(client, user):
@@ -92,5 +101,7 @@ def _artists_from_tracks(tracks):
 
 
 def add_spotify_artists(code, user):
+    user.profile.spotify_import_running = True
+    user.profile.save()
     token = spotify_token_from_code(code)['access_token']
     spotify_artists(token, user)

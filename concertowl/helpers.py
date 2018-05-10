@@ -1,10 +1,7 @@
 from datetime import datetime, timedelta
 
 import icalendar
-from cities_light.models import City, Country
-from django.core.cache import cache
 
-from concertowl.apis.eventful import get_events_for_artist
 from concertowl.apis.wikipedia import get_wikipedia_description
 from concertowl.models import Artist, Event, Notification
 
@@ -31,7 +28,7 @@ def add_artist(name, user=None):
                 artist.picture = picture
         except Exception:
             pass
-    artist.save()
+        artist.save()
     if user:
         artist.subscribers.add(user)
         artist.save()
@@ -57,12 +54,6 @@ def add_event(event):
                     setattr(event_object, key, event[key])
         event_object.save()
         Notification(event=event_object).save()
-
-
-def add_events(artist_name, location):
-    print("Adding events...")
-    for event in get_events_for_artist(artist_name, location):
-        add_event(event)
 
 
 def user_notifications(user_id):
@@ -94,17 +85,9 @@ def events_to_ical(events):
     return cal.to_ical()
 
 
-def _cached_all(key, model, timeout=60 * 60 * 12):
-    val = cache.get(key)
-    if val is None:
-        val = model.objects.all()
-        cache.set(key, val, timeout)
-    return val
+def location(city, country):
+    return '{},{}'.format(city.lower(), country.lower())
 
 
-def cities():
-    return _cached_all('city', City)
-
-
-def countries():
-    return _cached_all('country', Country)
+def split_parts(iterable, num_parts):
+    return [iterable[i::num_parts] for i in range(num_parts)]

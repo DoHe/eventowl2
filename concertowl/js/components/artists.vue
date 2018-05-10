@@ -18,6 +18,7 @@
     <AddArtistModal
       :show="showAddArtistModal"
       :artists="artistsData"
+      :import-running="spotifyImportRunning"
       @haveArtist="addDefaultArtist"
       @updateArtistInfo="updateArtistInfo"
       @closeAddArtistModal="showAddArtistModal = false"
@@ -35,7 +36,7 @@ const AddArtistModal = require('./addArtistModal.vue');
 const Pagination = require('./pagination.vue');
 
 module.exports = {
-  props: ['artists'],
+  props: ['artists', 'spotifyImportRunning'],
   data() {
     return {
       artistsData: this.artists,

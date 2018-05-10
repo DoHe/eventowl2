@@ -1,11 +1,12 @@
 {% extends 'concertowl/base.html' %}
+{% load json_tags %}
 {% block content %}
 <section class="section">
   <div class="container">
     <h1 class="title">
       All your favorite artists!
     </h1>
-    <artists :artists="{{ artists }}"/>
+    <artists :artists="{{ artists }}" :spotify-import-running="{{ user.profile.spotify_import_running|json }}"/>
   </div>
 </section>
 {% endblock content %}

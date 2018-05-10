@@ -15,7 +15,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_q',
-    'cities_light',
     'widget_tweaks'
 ]
 
@@ -101,6 +100,3 @@ Q_CLUSTER = {
     'django_redis': 'default',
     'workers': 10,
 }
-
-CITIES_LIGHT_TRANSLATION_LANGUAGES = ['de', 'en']
-CITIES_LIGHT_INCLUDE_COUNTRIES = ['DE', 'UK', 'US']

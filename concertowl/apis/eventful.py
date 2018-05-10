@@ -4,7 +4,10 @@ from functools import partial
 from multiprocessing.pool import Pool
 
 import requests
+from django_q.tasks import async as async_q
 from retrying import retry
+
+from concertowl.helpers import location, split_parts, add_event
 
 API_URL = "http://api.eventful.com/json/events/search"
 DEFAULT_PARAMS = {'app_key': os.getenv('EVENTFUL_API_KEY'), 'date': 'Future', 'category': 'music'}
@@ -81,12 +84,24 @@ def _get_events(artist, location=None):
     return events
 
 
-def _unique_events(collected_events):
-    ret = {}
-    for events in collected_events:
-        for event in events:
-            ret[event['title'] + event['start_time'] + event['venue']] = event
-    return list(ret.values())
+def _filter_events(events, locations):
+    return [e for e in events if location(e['city'], e['country']) in locations]
+
+
+def _get_events_for_locations(artist, locations):
+    events = _get_events(artist)
+    return _filter_events(events, locations)
+
+
+def _unique_events(events):
+    return list({
+        event['title'] + event['start_time'] + event['venue']: event
+        for event in events
+    }.values())
+
+
+def _unique_collected_events(collected_events):
+    return _unique_events(e for events in collected_events for e in events)
 
 
 def get_events_for_artists_block(artists, location):
@@ -97,17 +112,30 @@ def get_events_for_artists_block(artists, location):
     with Pool(math.ceil(page_count / 4)) as pool:
         collected_events += pool.map(partial(_get_events_page, artists, location), range(2, page_count + 2))
     print("Done!")
-    return _unique_events(collected_events)
+    return _unique_collected_events(collected_events)
 
 
 def get_events_for_artists(artists, locations):
     collected_events = []
     with Pool(math.ceil(len(artists) / 4)) as pool:
         collected_events += pool.map(_get_events, artists)
-    for event in _unique_events(collected_events):
-        location = '{},{}'.format(event['city'].lower(), event['country'].lower())
-        if location in locations:
-            yield event
+    return _filter_events(_unique_collected_events(collected_events), locations)
+
+
+def _add_events(events):
+    for event in events:
+        add_event(event)
+
+
+def add_events_for_artists(artists, locations):
+    for artists_part in split_parts(artists, min(len(artists), 10)):
+        async_q(_get_events_for_locations, artists, locations, hook='concertowl.apis.eventful._add_events')
+
+
+def add_events_for_artist(artist_name, location):
+    print("Adding events...")
+    for event in get_events_for_artist(artist_name, location):
+        add_event(event)
 
 
 def get_events_for_artist(artist, location=None):

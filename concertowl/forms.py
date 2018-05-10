@@ -1,13 +1,12 @@
 from django import forms
 from django.contrib.auth.models import User
 
-from concertowl.helpers import cities, countries, get_or_none
+from concertowl.helpers import get_or_none
 
 
 class UserForm(forms.Form):
-    city = forms.ChoiceField(choices=[('{}_{}'.format(c.name.lower(), c.country.name.lower()), c.name)
-                                      for c in cities()])
-    country = forms.ChoiceField(choices=[(c.name.lower(), c.name) for c in countries()])
+    city = forms.CharField(required=True)
+    country = forms.CharField(required=True)
     username = forms.CharField(required=False)
     email = forms.EmailField(required=False)
     password = forms.CharField(widget=forms.PasswordInput(), required=False)

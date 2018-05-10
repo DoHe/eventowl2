@@ -11,3 +11,4 @@
 * Settings error/success
 * Spotify progress
 * New account howto
+* Legal

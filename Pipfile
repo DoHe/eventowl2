@@ -19,7 +19,6 @@ Pillow = "*"
 whitenoise = "*"
 django-ipware = "*"
 "maxminddb-geolite2" = "*"
-django-cities-light = {git = "https://github.com/wswld/django-cities-light.git", ref = "autoslug-fix"}
 django-widget-tweaks = "*"
 
 [dev-packages]

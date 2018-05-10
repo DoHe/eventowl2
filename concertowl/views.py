@@ -8,10 +8,11 @@ from django.shortcuts import render
 from django.views import View
 from django_q.tasks import async as async_q
 
+from concertowl.apis.eventful import add_events_for_artist
 from concertowl.apis.spotify import add_spotify_artists
 from concertowl.forms import UserForm
-from concertowl.helpers import (add_artist, add_events, events_to_ical,
-                                get_or_none, user_notifications)
+from concertowl.helpers import (add_artist, events_to_ical, get_or_none,
+                                user_notifications)
 from concertowl.models import Artist, Event
 
 
@@ -59,7 +60,7 @@ class Artists(View):
             return JsonResponse(response)
 
         artist = add_artist(artist_name, request.user)
-        async_q(add_events, artist_name, 'Berlin, Germany')
+        async_q(add_events_for_artist, artist_name, 'Berlin, Germany')
         response = {'status': 'Created'}
         response.update(artist.to_json())
         return JsonResponse(response)
@@ -96,7 +97,7 @@ class UserPreferences(View):
             'email': user.email,
             'username': user.username if user.profile.manual else '',
             'password': user.password,
-            'city': '{}_{}'.format(user.profile.city.lower(), user.profile.country.lower()),
+            'city': user.profile.city,
             'country': user.profile.country
         }
 
@@ -115,7 +116,7 @@ class UserPreferences(View):
             for field in form.changed_data:
                 new_value = request.POST[field]
                 if field in ['city', 'country']:
-                    setattr(request.user.profile, field, new_value.split('_')[0])
+                    setattr(request.user.profile, field, new_value)
                     save_profile = True
                 elif field == 'password':
                     if new_value and not check_password(new_value, default_data['password']):

@@ -18,6 +18,8 @@
             <label class="label">Artist name</label>
             <div class="control has-icons-left">
               <input
+                ref="artistInput"
+                v-model="artistName"
                 class="js-artist-input input"
                 type="text"
                 placeholder="Artist name"
@@ -28,7 +30,7 @@
             </div>
             <p
               :class="{ 'is-invisible': warning === '' }"
-              class="js-artist-warning help is-danger">
+              class="help is-danger">
               {{ warning }}
             </p>
           </div>
@@ -46,6 +48,11 @@
             @click="importFromSpotify">
             Import
           </button>
+          <p
+            :class="{ 'is-invisible': !importing }"
+            class="help is-warning">
+            The import is running in the background. Feel free to close this window.
+          </p>
         </div>
       </div>
     </div>
@@ -59,12 +66,12 @@ const url = require('url');
 const querystring = require('querystring');
 
 module.exports = {
-  props: ['artists', 'show'],
+  props: ['artists', 'show', 'importRunning'],
   data() {
     return {
       warning: '',
       mode: 'manual',
-      importing: false,
+      importing: this.importRunning,
     };
   },
   watch: {
@@ -81,25 +88,22 @@ module.exports = {
   },
   methods: {
     focusInput() {
+      if (this.mode !== 'manual') return;
       setTimeout(() => {
-        const input = this.$el.querySelector('.js-artist-input');
-        if (input) {
-          input.value = '';
-          input.focus();
-        }
+        this.$refs.artistInput.focus();
       });
     },
     closeModal() {
       this.warning = '';
+      this.artistName = '';
       this.$emit('closeAddArtistModal');
     },
     addArtist() {
-      let artistName = this.$el.querySelector('.js-artist-input').value;
-      if (!artistName) {
+      if (!this.artistName) {
         this.warning = 'You have to provide a name!';
         return;
       }
-      artistName = artistName.toLowerCase();
+      const artistName = this.artistName.toLowerCase();
       if (this.artists.some(artist => artistName === artist.name)) {
         this.warning = 'You already follow this artist!';
         return;
