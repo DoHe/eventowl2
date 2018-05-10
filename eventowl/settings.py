@@ -107,5 +107,5 @@ Q_CLUSTER = {
 
 RAVEN_CONFIG = {
     'dsn': os.getenv('SENTRY_DSN'),
-    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
+    'release': os.getenv('SOURCE_VERSION'),
 }
