@@ -4,6 +4,7 @@ from django.contrib.auth import login
 from django.contrib.auth.models import User
 from geolite2 import geolite2
 from ipware import get_client_ip
+import user_agents
 
 from concertowl.models import UserProfile
 
@@ -29,6 +30,9 @@ def _create_profile(user, request, manual=False, unique_id=None):
 def session_user(get_response):
     def middleware(request):
         if request.GET.get('uuid'):
+            return get_response(request)
+
+        if user_agents.parse(request.META['HTTP_USER_AGENT']).is_bot:
             return get_response(request)
 
         if request.user.is_authenticated:

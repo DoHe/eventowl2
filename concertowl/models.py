@@ -3,6 +3,20 @@ import uuid
 from django import templatetags
 from django.contrib.auth.models import User
 from django.db import models
+from django.utils.text import slugify
+
+
+class ArtistQuerySet(models.QuerySet):
+
+    def _name_as_slug(self, kwargs):
+        if 'name' in kwargs:
+            kwargs['slug'] = slugify(kwargs['name'])
+            del(kwargs['name'])
+        return kwargs
+
+    def get(self, *args, **kwargs):
+        self._name_as_slug(kwargs)
+        return super().get(*args, **kwargs)
 
 
 class Artist(models.Model):
@@ -11,9 +25,16 @@ class Artist(models.Model):
     description = models.TextField(blank=True, default="")
     url = models.URLField(blank=True, default="", max_length=500)
     subscribers = models.ManyToManyField(User, related_name='subscribers')
+    slug = models.CharField(max_length=200)
+    objects = ArtistQuerySet.as_manager()
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def to_json(self):
         return {

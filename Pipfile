@@ -21,6 +21,7 @@ django-ipware = "*"
 "maxminddb-geolite2" = "*"
 django-widget-tweaks = "*"
 raven = "*"
+user-agents = "*"
 
 [dev-packages]
 "autopep8" = "*"
