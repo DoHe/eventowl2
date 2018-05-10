@@ -1,5 +1,6 @@
 import os
 import dj_database_url
+import raven
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.getenv('SECRET', 'iamnotsecret')
@@ -17,6 +18,9 @@ INSTALLED_APPS = [
     'django_q',
     'widget_tweaks'
 ]
+
+if os.getenv('SENTRY_DSN'):
+    INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -99,4 +103,9 @@ Q_CLUSTER = {
     'name': 'eventowl2',
     'django_redis': 'default',
     'workers': 10,
+}
+
+RAVEN_CONFIG = {
+    'dsn': os.getenv('SENTRY_DSN'),
+    'release': raven.fetch_git_sha(os.path.dirname(os.pardir)),
 }
