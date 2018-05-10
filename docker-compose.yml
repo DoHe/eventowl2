@@ -25,7 +25,7 @@ services:
     environment:
       - SPOTIFY_ID=${SPOTIFY_ID}
       - SPOTIFY_URL=${SPOTIFY_URL}
-    image: node:8
+    image: node:10
     volumes:
     - .:/code
     working_dir: /code

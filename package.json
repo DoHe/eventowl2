@@ -53,7 +53,7 @@
     "vue": "vue/dist/vue.common.js"
   },
   "engines": {
-    "node": "8.11.1",
-    "npm": "5.6.0"
+    "node": "10.1.0",
+    "npm": "6.0.1"
   }
 }
