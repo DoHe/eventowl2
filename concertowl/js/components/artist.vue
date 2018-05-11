@@ -10,7 +10,7 @@
       <div class="media-content">
         <div class="content">
           <p><strong><span class="is-capitalized">{{ artistName }}</span></strong></p>
-          <p v-if="description">
+          <p v-if="description" class="is-hidden-mobile">
             {{ description }}
             <span v-if="url">
               <br> See more on <a :href="url" target="_blank">Wikipedia</a>.
