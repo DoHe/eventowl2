@@ -117,7 +117,7 @@ def get_events_for_artists_block(artists, location):
 
 def get_events_for_artists(artists, locations):
     collected_events = []
-    with Pool(math.ceil(len(artists) / 4)) as pool:
+    with Pool(min(len(artists), 10)) as pool:
         collected_events += pool.map(_get_events, artists)
     return _filter_events(_unique_collected_events(collected_events), locations)
 
