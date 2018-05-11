@@ -4,7 +4,8 @@
     <h1 class="title is-inline-block">
       All the events of your favorite artists!
     </h1>
-    <a class="is-pulled-right" href="?format=ical&uuid={{ user.profile.uuid }}">Subscribe using ical</a>
+    <a class="is-pulled-right is-hidden-mobile" href="?format=ical&uuid={{ user.profile.uuid }}">Subscribe using ical</a>
+    <a class="is-hidden-tablet" href="?format=ical&uuid={{ user.profile.uuid }}">Subscribe using ical</a>
     <events :events="{{ events }}"></events>
   </div>
 </section>

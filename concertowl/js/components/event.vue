@@ -7,30 +7,37 @@
         </p>
       </figure>
       <div class="media-content">
-        <div class="content">
+        <div class="content" @click="openTicketUrl">
           <p><strong><span class="is-capitalized">{{ title }}</span></strong></p>
-          <p>
-            <span class="is-capitalized">{{ artists.join(', ') }}</span>
-            will be playing at
-            <span :title="`${address} (${city}, ${country})`" class="hover-text">{{ venue }}</span>.
-            <span v-if="startTime">
-              It starts at {{ startTime }} on {{ startDate }}.
-            </span>
-            <span v-else>
-              It happens on {{ startDate }}.
-            </span>
-            <span v-if="endDatetime">
-              <span v-if="endTime">
-                And ends at {{ endTime }} on {{ endDate }}.
+          <div class="is-hidden-mobile">
+            <p>
+              <span class="is-capitalized">{{ artists.join(', ') }}</span>
+              will be playing at
+              <span :title="`${address} (${city}, ${country})`" class="hover-text">
+                {{ venue }}
+              </span>.
+              <span v-if="startTime">
+                It starts at {{ startTime }} on {{ startDate }}.
               </span>
               <span v-else>
-                And ends on {{ endDate }}.
+                It happens on {{ startDate }}.
               </span>
-            </span>
-          </p>
-          <p>
-            Buy your tickets <a :href="ticketUrl" target="_blank">here</a>.
-          </p>
+              <span v-if="endDatetime">
+                <span v-if="endTime">
+                  And ends at {{ endTime }} on {{ endDate }}.
+                </span>
+                <span v-else>
+                  And ends on {{ endDate }}.
+                </span>
+              </span>
+            </p>
+            <p>
+              Buy your tickets <a :href="ticketUrl" target="_blank">here</a>.
+            </p>
+          </div>
+          <div class="is-hidden-tablet">
+            {{ startDate }} at {{ venue }}
+          </div>
         </div>
       </div>
     </article>
@@ -73,6 +80,9 @@ module.exports = {
         return undefined;
       }
       return new Date(datetime).toLocaleDateString([], { timeZone: 'UTC' });
+    },
+    openTicketUrl() {
+      window.open(this.ticketUrl, '_blank');
     },
   },
 };
