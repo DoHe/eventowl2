@@ -22,7 +22,6 @@ django-ipware = "*"
 django-widget-tweaks = "*"
 raven = "*"
 user-agents = "*"
-newrelic = "*"
 
 [dev-packages]
 "autopep8" = "*"
