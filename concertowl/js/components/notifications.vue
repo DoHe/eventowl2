@@ -50,7 +50,7 @@ module.exports = {
     },
   },
   mounted() {
-    window.setInterval(this.poll, 5000);
+    window.setInterval(this.poll, 20000);
   },
 };
 </script>
