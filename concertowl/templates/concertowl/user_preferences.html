@@ -63,6 +63,36 @@
         </div>
       </div>
     </form>
+
+    <hr class="hr"> 
+    <h3 class="title">Change user</h3>
+    {% if user.profile.manual %}
+      <form method="get" action="/logout/">
+        <input type="hidden" value="/user_preferences/" name="next">
+        <button type="submit" class="button is-danger">
+          Log out
+        </button>
+      </form>
+    {% else %}
+      <form method="post" action="/login/?next=/user_preferences/">
+        {% csrf_token %}
+        <div class="field">
+          <label class="label">Username</label>
+          <div class="control">
+            <input class="input" type="text" name="username" placeholder="Username">
+          </div>
+        </div>   
+        <div class="field">
+          <label class="label">Password</label>
+          <div class="control">
+            <input class="input" type="password" name="password" placeholder="*******">
+          </div>
+        </div>        
+        <button type="submit" class="button is-primary">
+          Log in
+        </button>
+      </form>
+    {% endif %}
 </div>
 </section>
 {% endblock content %}
