@@ -14,7 +14,7 @@
     </a>
     <div class="navbar-dropdown">
       <a
-        v-for="notification in notificationsData"
+        v-for="notification in dropdownData"
         :key="(notification.title || notification.artists) + notification.start_time"
         :href="`/events/${notification.event_id}`"
         class="dropdown-item">
@@ -33,6 +33,7 @@ module.exports = {
   data() {
     return {
       notificationsData: this.notifications,
+      dropdownData: this.notifications,
       active: false,
     };
   },
@@ -52,6 +53,7 @@ module.exports = {
     activeClicked() {
       this.active = !this.active;
       if (this.active) {
+        this.dropdownData = this.notificationsData;
         callBackend('/notifications/read/', {
           method: 'POST',
           body: new URLSearchParams(`ts=${Date.now()}`),

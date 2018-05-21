@@ -35,7 +35,7 @@
               Buy your tickets <a :href="ticketUrl" target="_blank">here</a>.
             </p>
           </div>
-          <div class="is-hidden-tablet">
+          <div class="js-mobile-beacon is-hidden-tablet">
             {{ startDate }} at {{ venue }}
           </div>
         </div>
@@ -82,7 +82,10 @@ module.exports = {
       return new Date(datetime).toLocaleDateString([], { timeZone: 'UTC' });
     },
     openTicketUrl() {
-      window.open(this.ticketUrl, '_blank');
+      const mobileBeacon = document.querySelector('.js-mobile-beacon');
+      if (mobileBeacon && mobileBeacon.offsetParent !== null) {
+        window.open(this.ticketUrl, '_blank');
+      }
     },
   },
 };
