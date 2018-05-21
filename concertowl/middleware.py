@@ -18,8 +18,11 @@ def _create_profile(user, request, manual=False, unique_id=None):
     if is_routable:
         ip_info = GEOIP_READER.get(ip)
         if ip_info is not None:
-            city = ip_info['city']['names']['en']
-            country = ip_info['country']['names']['en']
+            try:
+                city = ip_info['city']['names']['en']
+                country = ip_info['country']['names']['en']
+            except KeyError:
+                pass
     if unique_id:
         UserProfile.objects.create(user=user, city=city.lower(), country=country.lower(),
                                    manual=manual, uuid=unique_id).save()

@@ -13,3 +13,4 @@
 * Don't load complete bulma
 * Move to multi page webpack
 * PWA
+* Notifications
