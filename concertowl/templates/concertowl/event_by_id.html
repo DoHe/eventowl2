@@ -1,0 +1,11 @@
+{% extends 'concertowl/base.html' %} {% block content %}
+<section class="section">
+  <div class="container">
+    <h1 class="title is-inline-block">
+      An awesome event by one of your favorite artists
+    </h1>
+    <events :events="{{ events }}"></events>
+    <a href="/events">Check out all events</a>
+  </div>
+</section>
+{% endblock content %}

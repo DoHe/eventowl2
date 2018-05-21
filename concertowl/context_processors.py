@@ -12,6 +12,6 @@ def notifications(request):
     except AttributeError:
         pass
     return {
-        'notifications': json.dumps(user_notifications(request.user.id)),
+        'notifications': json.dumps([n.to_json() for n in user_notifications(request.user.id)]),
         'is_manual': is_manual
     }

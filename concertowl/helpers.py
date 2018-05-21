@@ -57,8 +57,12 @@ def add_event(event):
 
 
 def user_notifications(user_id):
-    filtered = Notification.objects.filter(event__artists__subscribers__id=user_id).order_by('created')
-    return [n.to_json() for n in filtered]
+    filtered = Notification.objects.filter(
+        event__artists__subscribers__id=user_id
+    ).exclude(
+        read_by__id=user_id
+    ).order_by('created')
+    return filtered
 
 
 def events_to_ical(events):

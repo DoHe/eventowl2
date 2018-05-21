@@ -75,13 +75,15 @@ class Event(models.Model):
             'end_time': self.end_time.isoformat() if self.end_time else None,
             'ticket_url': self.ticket_url,
             'venue': self.venue,
-            'artists': [artist.name for artist in self.artists.all()]
+            'artists': [artist.name for artist in self.artists.all()],
+            'event_id': self.id
         }
 
 
 class Notification(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     event = models.OneToOneField(Event, on_delete=models.CASCADE, related_name='event')
+    read_by = models.ManyToManyField(User, related_name='read_by')
 
     def to_json(self):
         j = {'created': self.created.isoformat()}

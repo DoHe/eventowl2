@@ -19,11 +19,13 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="{% static 'index.css' %}">
     <link rel="stylesheet" href="{% static 'fontello.css' %}">
-    <script src="{% static 'bundle.js' %}"></script> {% block extra_header %} {% endblock %}
+    <script src="{% static 'bundle.js' %}"></script>
+    {% block extra_header %}
+    {% endblock %}
 </head>
 
 <body>
-    <nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
+    <nav id="navbar" class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
                 <a class="navbar-item" href="{% url 'index' %}">
@@ -51,17 +53,14 @@
                         ({{ user.profile.city|title }}, {{user.profile.country|title}})
                         </a>
                     </div>
-                    <div class="navbar-item">
-                        <div id="notifications">
-                            <notifications :notifications="{{ notifications }}" />
-                        </div>
-                    </div>
+                    <notifications :notifications="{{ notifications }}" />
                 </div>
             </div>
         </div>
     </nav>
     <div id="app">
-        {% block content %} {% endblock %}
+        {% block content %}
+        {% endblock %}
     </div>
 </body>
 

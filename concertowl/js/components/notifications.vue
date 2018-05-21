@@ -1,25 +1,26 @@
 <template>
-  <div :class="{ 'is-active': active }" class="dropdown is-right" @click="active = !active">
-    <div class="tags has-addons">
-      <span class="js-notification-count dropdown-trigger tag is-rounded is-white">
-        {{ notificationsData.length }}
-      </span>
-      <span class="tag is-rounded is-white">
-        <span class="icon is-small">
-          <i class="fas icon-bell-alt"/>
+  <div :class="{ 'is-active': active }" class="navbar-item has-dropdown" @click="activeClicked">
+    <a class="navbar-link">
+      <div class="tags has-addons">
+        <span class="tag is-rounded is-white">
+          {{ notificationsData.length }}
         </span>
-      </span>
-    </div>
-    <div class="dropdown-menu" role="menu">
-      <div class="js-notification-dropdown dropdown-content">
-        <div
-          v-for="notification in notificationsData"
-          :key="(notification.title || notification.artists) + notification.start_time"
-          class="dropdown-item">
-          <p class="has-text-weight-bold">{{ notification.title }}</p>
-          <p>{{ localizedTime(notification.start_time) }}</p>
-        </div>
+        <span class="tag is-rounded is-white">
+          <span class="icon">
+            <i class="fas icon-bell-alt"/>
+          </span>
+        </span>
       </div>
+    </a>
+    <div class="navbar-dropdown">
+      <a
+        v-for="notification in notificationsData"
+        :key="(notification.title || notification.artists) + notification.start_time"
+        :href="`/events/${notification.event_id}`"
+        class="dropdown-item">
+        <p class="has-text-weight-bold">{{ notification.title }}</p>
+        <p>{{ localizedTime(notification.start_time) }}</p>
+      </a>
     </div>
   </div>
 </template>
@@ -48,9 +49,20 @@ module.exports = {
         .then(data => data.json())
         .then((json) => { this.notificationsData = json.notifications; });
     },
+    activeClicked() {
+      this.active = !this.active;
+      if (this.active) {
+        callBackend('/notifications/read/', {
+          method: 'POST',
+          body: new URLSearchParams(`ts=${Date.now()}`),
+        });
+      } else {
+        this.poll();
+      }
+    },
   },
   mounted() {
-    window.setInterval(this.poll, 20000);
+    window.setInterval(this.poll, 5000);
   },
 };
 </script>

@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   new Vue({
-    el: '#notifications',
+    el: '#navbar',
     components: { Notifications },
   });
 

@@ -3,6 +3,7 @@ import json
 
 from django.contrib.auth import login
 from django.contrib.auth.hashers import check_password
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.views import View
@@ -43,6 +44,12 @@ class Events(View):
         return render(request, 'concertowl/events.html', {'events': json.dumps(json_events)})
 
 
+class EventById(View):
+    def get(self, request, event_id):
+        event = Event.objects.get(id=event_id)
+        return render(request, 'concertowl/event_by_id.html', {'events': [event.to_json()]})
+
+
 class Artists(View):
 
     def get(self, request, artist=None):
@@ -77,7 +84,25 @@ class Artists(View):
 class Notifications(View):
 
     def get(self, request):
-        return JsonResponse({'status': 'ok', 'notifications': user_notifications(request.user.id)})
+        return JsonResponse({
+            'status': 'ok',
+            'notifications': [n.to_json() for n in user_notifications(request.user.id)]
+        })
+
+    def post(self, request, action=None):
+        if action == 'read':
+            ts = request.POST.get('ts')
+            if ts:
+                ts = datetime.datetime.fromtimestamp(int(ts)/1000)
+                notifications = user_notifications(request.user.id).filter(created__lte=ts)
+                try:
+                    user = User.objects.get(id=request.user.id)
+                    for n in notifications:
+                        n.read_by.add(user)
+                        n.save()
+                except User.DoesNotExist:
+                    pass
+        return JsonResponse({'status': 'ok'})
 
 
 class Spotify(View):
