@@ -30,7 +30,7 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.8.2",
+    "eslint-plugin-react": "^7.9.1",
     "eslint-plugin-vue": "^4.5.0",
     "eslint_d": "^5.3.1",
     "node-sass": "^4.9.0",
@@ -46,7 +46,7 @@
   "dependencies": {
     "bulma": "^0.7.1",
     "js-cookie": "^2.2.0",
-    "raven-js": "^3.25.2",
+    "raven-js": "^3.26.2",
     "vue": "^2.5.16"
   },
   "browser": {
@@ -54,6 +54,6 @@
   },
   "engines": {
     "node": "10.1.0",
-    "npm": "6.0.1"
+    "npm": "6.1.0"
   }
 }

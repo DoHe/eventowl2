@@ -21,17 +21,17 @@ INSTALLED_APPS = [
 if os.getenv('SENTRY_DSN'):
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
 
-MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'concertowl.middleware.session_user',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
-]
+MIDDLEWARE = ['django.middleware.gzip.GZipMiddleware',
+              'django.middleware.security.SecurityMiddleware',
+              'django.contrib.sessions.middleware.SessionMiddleware',
+              'django.middleware.common.CommonMiddleware',
+              'django.middleware.csrf.CsrfViewMiddleware',
+              'django.contrib.auth.middleware.AuthenticationMiddleware',
+              'django.contrib.messages.middleware.MessageMiddleware',
+              'django.middleware.clickjacking.XFrameOptionsMiddleware',
+              'concertowl.middleware.session_user',
+              'whitenoise.middleware.WhiteNoiseMiddleware',
+              ]
 
 ROOT_URLCONF = 'eventowl.urls'
 
@@ -108,3 +108,5 @@ RAVEN_CONFIG = {
     'dsn': os.getenv('SENTRY_DSN'),
     'release': os.getenv('SOURCE_VERSION'),
 }
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
