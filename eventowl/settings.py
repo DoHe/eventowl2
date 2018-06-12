@@ -108,5 +108,3 @@ RAVEN_CONFIG = {
     'dsn': os.getenv('SENTRY_DSN'),
     'release': os.getenv('SOURCE_VERSION'),
 }
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
