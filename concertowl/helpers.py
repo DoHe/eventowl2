@@ -75,7 +75,7 @@ def events_to_ical(events):
         now = ical_event['dtstamp']
         ical_event.add('uid', f'{now.to_ical().decode()}/{idx}@Concertowl')
         artists = ', '.join(a.name.title() for a in event.artists.all())
-        ical_event.add('description', "{} at {}\n\n{}".format(artists, event.venue, event.ticket_url))
+        ical_event.add('description', f"{artists} at {event.venue}")
         if event.start_time.hour or event.start_time.minute:
             ical_event.add('dtstart', event.start_time)
             if event.end_time:
@@ -85,7 +85,7 @@ def events_to_ical(events):
         else:
             ical_event.add('dtstart', event.start_time.date())
         if event.address:
-            ical_event.add('location', '{}, {}'.format(event.venue, event.address))
+            ical_event.add('location', f'{event.venue}, {event.address}')
         else:
             ical_event.add('location', event.venue)
         ical_event.add('summary', event.title)
