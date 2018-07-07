@@ -67,24 +67,28 @@ def user_notifications(user_id):
 
 def events_to_ical(events):
     cal = icalendar.Calendar()
-    for event in events:
+    cal.add('prodid', '-//Eventowl//Concertowl//Global')
+    cal.add('version', '2.0')
+    for idx, event in enumerate(events):
         ical_event = icalendar.Event()
+        ical_event.add('dtstamp', datetime.now())
+        now = ical_event['dtstamp']
+        ical_event.add('uid', f'{now.to_ical().decode()}/{idx}@Concertowl')
         artists = ', '.join(a.name.title() for a in event.artists.all())
-        ical_event['description'] = "{} at {}\n\n{}".format(artists, event.venue, event.ticket_url)
+        ical_event.add('description', "{} at {}\n\n{}".format(artists, event.venue, event.ticket_url))
         if event.start_time.hour or event.start_time.minute:
-            ical_event['dtstart'] = event.start_time
+            ical_event.add('dtstart', event.start_time)
             if event.end_time:
-                ical_event['dtend'] = event.end_time
+                ical_event.add('dtend', event.end_time)
             else:
-                ical_event['dtend'] = event.start_time + timedelta(hours=2)
+                ical_event.add('dtend', event.start_time + timedelta(hours=2))
         else:
-            ical_event['dtstart'] = event.start_time.date()
+            ical_event.add('dtstart', event.start_time.date())
         if event.address:
-            ical_event['location'] = '{}, {}'.format(event.venue, event.address)
+            ical_event.add('location', '{}, {}'.format(event.venue, event.address))
         else:
-            ical_event['location'] = event.venue
-        ical_event['summary'] = event.title
-        ical_event['dtstamp'] = datetime.now()
+            ical_event.add('location', event.venue)
+        ical_event.add('summary', event.title)
         cal.add_component(ical_event)
     return cal.to_ical()
 
