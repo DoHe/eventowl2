@@ -64,7 +64,9 @@ def _get_events_page(artists, location, page_number):
         performers = _performers(event)
         if not set(performers) & artists:
             continue
-        events.append(_event(event, performers))
+        model_event = _event(event, performers)
+        if model_event:
+            events.append(model_event)
     if page_number == 1:
         return events, int(parsed['page_count'])
     else:
@@ -90,7 +92,7 @@ def _get_events(artist, location=None):
 
 
 def _filter_events(events, locations):
-    return [e for e in events if location(e['city'], e['country']) in locations]
+    return [e for e in events if e['city'] and e['country'] and location(e['city'], e['country']) in locations]
 
 
 def _get_events_for_locations(artist, locations):
