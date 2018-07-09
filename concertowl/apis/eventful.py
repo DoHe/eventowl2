@@ -32,18 +32,21 @@ def _as_https(u):
 
 
 def _event(api_event, performers):
-    return {
-        'picture': _as_https(api_event['image']['medium']['url']) if api_event['image'] else None,
-        'city': api_event['city_name'],
-        'country': api_event['country_name'],
-        'title': api_event['title'],
-        'start_time': api_event['start_time'],
-        'end_time': api_event['stop_time'],
-        'venue': api_event['venue_name'],
-        'address': api_event['venue_address'],
-        'ticket_url': _as_https(api_event['url']),
-        'artists': performers
-    }
+    try:
+        return {
+            'picture': _as_https(api_event['image']['medium']['url']) if api_event.get('image') else None,
+            'city': api_event['city_name'],
+            'country': api_event['country_name'],
+            'title': api_event.get('title', ', '.join(performers)),
+            'start_time': api_event['start_time'],
+            'end_time': api_event.get('stop_time'),
+            'venue': api_event.get('venue_name'),
+            'address': api_event.get('venue_address'),
+            'ticket_url': _as_https(api_event['url']),
+            'artists': performers
+        }
+    except KeyError:
+        return {}
 
 
 @retry(wait_fixed=2000, stop_max_attempt_number=10)
@@ -80,7 +83,9 @@ def _get_events(artist, location=None):
         performers = _performers(event)
         if artist.lower() not in performers:
             continue
-        events.append(_event(event, performers))
+        model_event = _event(event, performers)
+        if model_event:
+            events.append(model_event)
     return events
 
 
