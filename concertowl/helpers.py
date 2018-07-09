@@ -36,12 +36,13 @@ def add_artist(name, user=None):
 
 
 def add_event(event):
-    event_object, new = Event.objects.get_or_create(
-        venue=event['venue'],
-        city=event['city'],
+    event_object = get_or_none(
+        Event,
+        venue__iexact=event['venue'],
+        city__iexact=event['city'],
         start_time=event['start_time']
     )
-    if new:
+    if event_object:
         for key in event:
             if key == 'artists':
                 for artist in event[key]:
