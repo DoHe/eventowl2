@@ -78,11 +78,11 @@ def events_to_ical(events):
         artists = ', '.join(a.name.title() for a in event.artists.all())
         ical_event.add('description', f"{artists} at {event.venue}")
         if event.start_time.hour or event.start_time.minute:
-            ical_event.add('dtstart', event.start_time)
+            ical_event.add('dtstart', event.start_time.replace(tzinfo=None))
             if event.end_time:
-                ical_event.add('dtend', event.end_time)
+                ical_event.add('dtend', event.end_time.replace(tzinfo=None))
             else:
-                ical_event.add('dtend', event.start_time + timedelta(hours=2))
+                ical_event.add('dtend', (event.start_time + timedelta(hours=2)).replace(tzinfo=None))
         else:
             ical_event.add('dtstart', event.start_time.date())
         if event.address:
