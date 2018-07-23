@@ -58,10 +58,11 @@ class Event(models.Model):
     artists = models.ManyToManyField(Artist, related_name='artists')
 
     def __str__(self):
+        start_time = self.start_time if isinstance(self.start_time, str) else self.start_time.strftime("%Y-%m-%d")
         return "{} at {} on {}".format(
             str(self.title),
             str(self.venue),
-            str(self.start_time.strftime("%Y-%m-%d"))
+            str(start_time)
         )
 
     def to_json(self):

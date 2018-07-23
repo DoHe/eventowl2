@@ -42,7 +42,13 @@ def add_event(event):
         city__iexact=event['city'],
         start_time=event['start_time']
     )
-    if event_object:
+    if event_object is None:
+        event_object = Event(
+            venue=event['venue'],
+            city=event['city'],
+            start_time=event['start_time']
+        )
+        event_object.save()
         for key in event:
             if key == 'artists':
                 for artist in event[key]:
