@@ -17,21 +17,30 @@
                 <br> See more on <a :href="url" target="_blank">Wikipedia</a>.
               </span>
             </p>
+            <p v-else class="is-hidden-mobile">
+              We sadly couldn't find a description for this artist.
+              <br> Try searching for it on <a :href="`https://ecosia.org/search?q=${artistName}&tt=eventowl`" target="_blank">Ecosia</a>.
+            </p>
           </div>
         </div>
       </article>
     </div>
     <div
-      v-if="description"
       :class="{'is-active': showDescription}"
       class="modal is-hidden-tablet">
       <div class="modal-background" @click="showDescription=false"/>
       <div class="modal-content">
         <div class="box">
-          {{ description }}
-          <span v-if="url">
-            <br> See more on <a :href="url" target="_blank">Wikipedia</a>.
-          </span>
+          <div v-if="description">
+            {{ description }}
+            <span v-if="url">
+              <br> See more on <a :href="url" target="_blank">Wikipedia</a>.
+            </span>
+          </div>
+          <div v-else>
+            We sadly couldn't find a description for this artist.
+            <br> Try searching for it on <a :href="`https://ecosia.org/search?q=${artistName}&tt=eventowl`" target="_blank">Ecosia</a>.
+          </div>
         </div>
       </div>
     </div>
