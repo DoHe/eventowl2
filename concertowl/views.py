@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from django_q.tasks import async as async_q
+from django_q.tasks import async_task as async_q
 
 from concertowl.apis.eventful import add_events_for_artist
 from concertowl.apis.spotify import add_spotify_artists

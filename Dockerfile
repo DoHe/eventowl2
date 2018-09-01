@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.7
 ENV PYTHONUNBUFFERED 1
 ENV PIP_NO_CACHE_DIR false
 RUN mkdir /app

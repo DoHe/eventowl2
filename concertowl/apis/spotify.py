@@ -2,7 +2,7 @@ import os
 from collections import defaultdict
 
 import requests
-from django_q.tasks import async as async_q
+from django_q.tasks import async_task as async_q
 from spotipy import Spotify
 
 from concertowl.apis.eventful import add_events_for_artists

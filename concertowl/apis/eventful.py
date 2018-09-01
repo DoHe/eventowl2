@@ -4,7 +4,7 @@ from functools import partial
 from multiprocessing.pool import Pool
 
 import requests
-from django_q.tasks import async as async_q
+from django_q.tasks import async_task as async_q
 from retrying import retry
 
 from concertowl.helpers import location, split_parts, add_event
