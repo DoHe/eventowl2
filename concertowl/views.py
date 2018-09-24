@@ -14,7 +14,7 @@ from concertowl.apis.spotify import add_spotify_artists
 from concertowl.forms import UserForm
 from concertowl.helpers import (add_artist, events_to_ical, get_or_none,
                                 user_notifications)
-from concertowl.models import Artist, Event
+from concertowl.models import Artist, Event, UserProfile
 
 
 def index(request):
@@ -30,9 +30,11 @@ class Events(View):
             if not event_format:
                 return HttpResponseForbidden("Access forbidden")
             events = events.filter(artists__subscribers__profile__uuid=user_uuid)
+            city = UserProfile.objects.get(uuid=user_uuid).city
+            events = events.filter(city__iexact=city)
         else:
             events = events.filter(artists__subscribers__id=request.user.id)
-        events = events.filter(city__iexact=request.user.profile.city)
+            events = events.filter(city__iexact=request.user.profile.city)
         events = events.order_by('start_time').distinct()
 
         if event_format == 'ical':
