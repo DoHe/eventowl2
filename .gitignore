@@ -111,3 +111,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# IDEs
+.idea
+.vscode
+*.sublime*
