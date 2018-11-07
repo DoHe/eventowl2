@@ -7,7 +7,8 @@ import requests
 from django_q.tasks import async_task as async_q
 from retrying import retry
 
-from concertowl.helpers import location, split_parts, add_event
+from concertowl.helpers import split_parts, add_event
+from concertowl.apis.events import filter_events, unique_collected_events
 
 API_URL = "http://api.eventful.com/json/events/search"
 DEFAULT_PARAMS = {'app_key': os.getenv('EVENTFUL_API_KEY'), 'date': 'Future', 'category': 'music'}
@@ -91,24 +92,9 @@ def _get_events(artist, location=None):
     return events
 
 
-def _filter_events(events, locations):
-    return [e for e in events if e['city'] and e['country'] and location(e['city'], e['country']) in locations]
-
-
 def _get_events_for_locations(artist, locations):
     events = _get_events(artist)
-    return _filter_events(events, locations)
-
-
-def _unique_events(events):
-    return list({
-        event['title'] + event['start_time'] + event['venue']: event
-        for event in events
-    }.values())
-
-
-def _unique_collected_events(collected_events):
-    return _unique_events(e for events in collected_events for e in events)
+    return filter_events(events, locations)
 
 
 def get_events_for_artists_block(artists, location):
@@ -119,14 +105,14 @@ def get_events_for_artists_block(artists, location):
     with Pool(math.ceil(page_count / 4)) as pool:
         collected_events += pool.map(partial(_get_events_page, artists, location), range(2, page_count + 2))
     print("Done!")
-    return _unique_collected_events(collected_events)
+    return unique_collected_events(collected_events)
 
 
 def get_events_for_artists(artists, locations):
     collected_events = []
     with Pool(min(len(artists), 10)) as pool:
         collected_events += pool.map(_get_events, artists)
-    return _filter_events(_unique_collected_events(collected_events), locations)
+    return filter_events(unique_collected_events(collected_events), locations)
 
 
 def _add_events(task):

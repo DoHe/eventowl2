@@ -38,7 +38,6 @@ def add_artist(name, user=None):
 def add_event(event):
     event_object = get_or_none(
         Event,
-        venue__iexact=event['venue'],
         city__iexact=event['city'],
         start_time=event['start_time']
     )
