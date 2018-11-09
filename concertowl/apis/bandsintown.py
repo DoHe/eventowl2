@@ -17,7 +17,7 @@ def _event(api_event, performers):
             'city': api_event['venue']['city'],
             'country': api_event['venue']['country'],
             'title': description if description else ', '.join(p.title() for p in performers),
-            'start_time': api_event['datetime'],
+            'start_time': api_event['datetime'].replace('T', ' '),
             'end_time': None,
             'venue': api_event['venue']['name'],
             'address': None,
@@ -28,9 +28,8 @@ def _event(api_event, performers):
         return {}
 
 
-@retry(wait_fixed=10, stop_max_attempt_number=11)
+@retry(wait_fixed=60, stop_max_attempt_number=11)
 def _get_events(artist):
-    print("Getting events for", artist)
     resp = requests.get(API_URL.format(artist), params={'app_id': 'eventowl'})
     resp.raise_for_status()
     parsed = resp.json()
@@ -49,7 +48,6 @@ def _get_events(artist):
 
 def get_events_for_artists(artists, locations):
     collected_events = []
-    print("Starting", min(len(artists), 10), "processes")
-    with Pool(min(len(artists), 10)) as pool:
+    with Pool(min(len(artists), 5)) as pool:
         collected_events += pool.map(_get_events, artists)
     return filter_events(unique_collected_events(collected_events), locations)

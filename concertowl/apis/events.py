@@ -5,12 +5,12 @@ def filter_events(events, locations):
     return [e for e in events if e['city'] and e['country'] and location(e['city'], e['country']) in locations]
 
 
-def _unique_events(events):
+def unique_events(events):
     return list({
-        event['title'] + event['start_time'] + event['venue']: event
+        event['title'].lower() + event['start_time'].split()[0] + event['city'].lower(): event
         for event in events
     }.values())
 
 
 def unique_collected_events(collected_events):
-    return _unique_events(e for events in collected_events for e in events)
+    return unique_events(e for events in collected_events for e in events)
