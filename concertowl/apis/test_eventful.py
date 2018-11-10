@@ -10,7 +10,7 @@ from concertowl.helpers import location
 class EventfulTests(TestCase):
 
     def setUp(self):
-        self.events = [{'title': i, 'start_time': i, 'venue': i} for i in range(10)]
+        self.events = [{'title': str(i), 'start_time': str(i), 'venue': str(i)} for i in range(10)]
         self.testCountry = "test_country"
         self.testCity = "test_city"
         self.testTitle = "test_title"
