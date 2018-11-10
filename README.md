@@ -1,5 +1,7 @@
 # eventowl2
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/DoHe/eventowl2.svg)](https://greenkeeper.io/)
+
 ## Run
 
 `docker-compose up`
