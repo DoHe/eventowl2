@@ -1,3 +1,4 @@
+import json
 from multiprocessing import Pool
 
 import requests
@@ -34,7 +35,7 @@ def _get_events(artist):
     resp.raise_for_status()
     try:
         parsed = resp.json()
-    except JSONDecodeError:
+    except json.JSONDecodeError:
         raise IOError(resp.text)
     if not parsed:
         return []
