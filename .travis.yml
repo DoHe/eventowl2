@@ -5,4 +5,4 @@ install:
   - pip install pipenv
   - pipenv install --dev --deploy
 script:
-  - python manage.py test
+  - python manage.py test --settings=eventowl.settings_test

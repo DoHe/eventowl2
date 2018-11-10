@@ -33,7 +33,7 @@ class EventfulTests(TestCase):
             ('duplicates', [[self.events[0], self.events[1]], [self.events[1]]], [self.events[0], self.events[1]])
         ]:
             with self.subTest(name):
-                self.assertListEqual(eventful._unique_collected_events(events), expected)
+                self.assertListEqual(eventful.unique_collected_events(events), expected)
 
     def test_add_events_for_artists(self):
         with patch.object(eventful, '_get_events', return_value=[self.testEvent]), patch.object(eventful, 'add_event') as add_mock:
