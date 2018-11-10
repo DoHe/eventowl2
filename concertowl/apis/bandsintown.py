@@ -32,7 +32,10 @@ def _event(api_event, performers):
 def _get_events(artist):
     resp = requests.get(API_URL.format(artist), params={'app_id': 'eventowl'})
     resp.raise_for_status()
-    parsed = resp.json()
+    try:
+        parsed = resp.json()
+    except JSONDecodeError:
+        raise IOError(resp.text)
     if not parsed:
         return []
     events = []
