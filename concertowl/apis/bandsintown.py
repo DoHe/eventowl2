@@ -36,6 +36,8 @@ def _get_events(artist):
     try:
         parsed = resp.json()
     except json.JSONDecodeError:
+        if resp.text == 'Not Found':
+            return []
         raise IOError(resp.text)
     if not parsed:
         return []
