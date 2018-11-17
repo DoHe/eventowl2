@@ -3,9 +3,10 @@ from multiprocessing import Pool
 
 import requests
 from retrying import retry
+from sentry_sdk import capture_exception
 
 from concertowl.apis.events import filter_events, unique_collected_events
-from eventowl.settings import SENTRY_CLIENT
+from eventowl.settings import SENTRY_DSN
 
 API_URL = 'https://rest.bandsintown.com/artists/{}/events'
 
@@ -45,8 +46,9 @@ def _get_events_call(artist):
 def _get_events(artist):
     try:
         parsed = _get_events_call(artist)
-    except Exception:
-        SENTRY_CLIENT.captureException()
+    except Exception as e:
+        if SENTRY_DSN:
+            capture_exception(e)
         return []
     if not parsed:
         return []
