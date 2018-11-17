@@ -1,5 +1,6 @@
 import json
 from multiprocessing import Pool
+from urllib.parse import quote_plus
 
 import requests
 from retrying import retry
@@ -33,7 +34,8 @@ def _event(api_event, performers):
 
 @retry(wait_fixed=60, stop_max_attempt_number=11)
 def _get_events_call(artist):
-    resp = requests.get(API_URL.format(artist), params={'app_id': 'eventowl'})
+    resp = requests.get(API_URL.format(quote_plus(artist)),
+                        params={'app_id': 'eventowl'})
     resp.raise_for_status()
     try:
         return resp.json()
