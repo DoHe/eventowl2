@@ -20,7 +20,7 @@ def _event(api_event, performers):
             'picture': None,
             'city': api_event['venue']['city'],
             'country': api_event['venue']['country'],
-            'title': description if description else ', '.join(p.title() for p in performers),
+            'title': description[:50] if description else ', '.join(p.title() for p in performers),
             'start_time': api_event['datetime'].replace('T', ' '),
             'end_time': None,
             'venue': api_event['venue']['name'],
