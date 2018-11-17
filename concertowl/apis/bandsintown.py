@@ -5,6 +5,7 @@ import requests
 from retrying import retry
 
 from concertowl.apis.events import filter_events, unique_collected_events
+from eventowl.settings import SENTRY_CLIENT
 
 API_URL = 'https://rest.bandsintown.com/artists/{}/events'
 
@@ -30,15 +31,23 @@ def _event(api_event, performers):
 
 
 @retry(wait_fixed=60, stop_max_attempt_number=11)
-def _get_events(artist):
+def _get_events_call(artist):
     resp = requests.get(API_URL.format(artist), params={'app_id': 'eventowl'})
     resp.raise_for_status()
     try:
-        parsed = resp.json()
+        return resp.json()
     except json.JSONDecodeError:
-        if resp.text == 'Not Found':
+        if 'not found' in resp.text.lower():
             return []
         raise IOError(resp.text)
+
+
+def _get_events(artist):
+    try:
+        parsed = _get_events_call(artist)
+    except Exception:
+        SENTRY_CLIENT.captureException()
+        return []
     if not parsed:
         return []
     events = []

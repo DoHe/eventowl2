@@ -1,4 +1,6 @@
 import os
+
+from raven import Client as RavenClient
 import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,6 +22,7 @@ INSTALLED_APPS = [
 
 if os.getenv('SENTRY_DSN'):
     INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+    SENTRY_CLIENT = RavenClient(os.getenv('SENTRY_DSN'))
 
 MIDDLEWARE = ['django.middleware.gzip.GZipMiddleware',
               'django.middleware.security.SecurityMiddleware',
