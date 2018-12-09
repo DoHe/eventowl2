@@ -79,7 +79,7 @@ def _get_events(artist, location=None):
     resp = requests.get(API_URL, params=dict(location=location, keywords=artist, page_size=250, **DEFAULT_PARAMS))
     resp.raise_for_status()
     parsed = resp.json()
-    if not parsed['events']:
+    if not parsed.get('events'):
         return []
     events = []
     for event in parsed['events']['event']:
@@ -92,8 +92,10 @@ def _get_events(artist, location=None):
     return events
 
 
-def _get_events_for_locations(artist, locations):
-    events = _get_events(artist)
+def _get_events_for_locations(artists, locations):
+    events = []
+    for artist in artists:
+        events += _get_events(artist)
     return filter_events(events, locations)
 
 
@@ -122,7 +124,7 @@ def _add_events(task):
 
 def add_events_for_artists(artists, locations):
     for artists_part in split_parts(artists, 10):
-        async_q(_get_events_for_locations, artists, locations, hook='concertowl.apis.eventful._add_events')
+        async_q(_get_events_for_locations, artists_part, locations, hook='concertowl.apis.eventful._add_events')
 
 
 def add_events_for_artist(artist_name, location):

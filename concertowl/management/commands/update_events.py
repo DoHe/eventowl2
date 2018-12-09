@@ -11,7 +11,7 @@ class Command(BaseCommand):
     help = 'Update events for all artists'
 
     def handle(self, *args, **options):
-        artists = [artist.name for artist in Artist.objects.all()]
+        artists = {artist.name for artist in Artist.objects.all()}
         locations = {'{},{}'.format(u.city.lower(), u.country.lower()) for u in UserProfile.objects.all()}
         print("Getting events for {} artists in {} locations...".format(len(artists), len(locations)))
         events = eventful_events(artists, locations)
