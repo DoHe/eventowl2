@@ -1,4 +1,7 @@
 import os
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 import dj_database_url
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -18,8 +21,12 @@ INSTALLED_APPS = [
     'widget_tweaks'
 ]
 
-if os.getenv('SENTRY_DSN'):
-    INSTALLED_APPS.append('raven.contrib.django.raven_compat')
+SENTRY_DSN = os.getenv('SENTRY_DSN')
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration()]
+    )
 
 MIDDLEWARE = ['django.middleware.gzip.GZipMiddleware',
               'django.middleware.security.SecurityMiddleware',

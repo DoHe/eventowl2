@@ -1,10 +1,13 @@
 import json
 from multiprocessing import Pool
+from urllib.parse import quote_plus
 
 import requests
 from retrying import retry
+from sentry_sdk import capture_exception
 
 from concertowl.apis.events import filter_events, unique_collected_events
+from eventowl.settings import SENTRY_DSN
 
 API_URL = 'https://rest.bandsintown.com/artists/{}/events'
 
@@ -17,7 +20,7 @@ def _event(api_event, performers):
             'picture': None,
             'city': api_event['venue']['city'],
             'country': api_event['venue']['country'],
-            'title': description if description else ', '.join(p.title() for p in performers),
+            'title': description[:50] if description else ', '.join(p.title() for p in performers),
             'start_time': api_event['datetime'].replace('T', ' '),
             'end_time': None,
             'venue': api_event['venue']['name'],
@@ -30,15 +33,25 @@ def _event(api_event, performers):
 
 
 @retry(wait_fixed=60, stop_max_attempt_number=11)
-def _get_events(artist):
-    resp = requests.get(API_URL.format(artist), params={'app_id': 'eventowl'})
+def _get_events_call(artist):
+    resp = requests.get(API_URL.format(quote_plus(artist)),
+                        params={'app_id': 'eventowl'})
     resp.raise_for_status()
     try:
-        parsed = resp.json()
+        return resp.json()
     except json.JSONDecodeError:
-        if resp.text == 'Not Found':
+        if 'not found' in resp.text.lower():
             return []
         raise IOError(resp.text)
+
+
+def _get_events(artist):
+    try:
+        parsed = _get_events_call(artist)
+    except Exception as e:
+        if SENTRY_DSN:
+            capture_exception(e)
+        return []
     if not parsed:
         return []
     events = []
