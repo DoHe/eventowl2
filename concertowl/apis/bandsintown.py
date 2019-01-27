@@ -40,7 +40,9 @@ def _get_events_call(artist):
     try:
         return resp.json()
     except json.JSONDecodeError:
-        if 'not found' in resp.text.lower():
+        not_found = 'not found' in resp.text.lower()
+        internal_error = 'error occurred while searching' in resp.text.lower()
+        if not_found or internal_error:
             return []
         raise IOError(resp.text)
 
@@ -49,6 +51,11 @@ def _get_events(artist):
     try:
         parsed = _get_events_call(artist)
     except Exception as e:
+        try:
+            if e.response.status_code == 404:
+                return []
+        except Exception:
+            pass
         if SENTRY_DSN:
             capture_exception(e)
         return []

@@ -6,9 +6,11 @@ from multiprocessing.pool import Pool
 import requests
 from django_q.tasks import async_task as async_q
 from retrying import retry
+from sentry_sdk import capture_exception
 
-from concertowl.helpers import split_parts, add_event
 from concertowl.apis.events import filter_events, unique_collected_events
+from concertowl.helpers import add_event, split_parts
+from eventowl.settings import SENTRY_DSN
 
 API_URL = "http://api.eventful.com/json/events/search"
 DEFAULT_PARAMS = {'app_key': os.getenv('EVENTFUL_API_KEY'), 'date': 'Future', 'category': 'music'}
@@ -92,6 +94,15 @@ def _get_events(artist, location=None):
     return events
 
 
+def _safe_get_events(*args, **kwargs):
+    try:
+        return _get_events(*args, **kwargs)
+    except Exception as e:
+        if SENTRY_DSN:
+            capture_exception(e)
+        return []
+
+
 def _get_events_for_locations(artists, locations):
     events = []
     for artist in artists:
@@ -113,7 +124,7 @@ def get_events_for_artists_block(artists, location):
 def get_events_for_artists(artists, locations):
     collected_events = []
     with Pool(min(len(artists), 10)) as pool:
-        collected_events += pool.map(_get_events, artists)
+        collected_events += pool.map(_safe_get_events, artists)
     return filter_events(unique_collected_events(collected_events), locations)
 
 
