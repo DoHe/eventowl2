@@ -6,3 +6,7 @@ install:
   - pipenv install --dev --deploy
 script:
   - python manage.py test --settings=eventowl.settings_test
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/.cache/pipenv
