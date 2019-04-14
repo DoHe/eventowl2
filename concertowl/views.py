@@ -97,7 +97,7 @@ class Notifications(View):
             ts = request.POST.get('ts')
             if ts:
                 ts = datetime.datetime.fromtimestamp(int(ts)/1000)
-                notifications = user_notifications(request.user.id).filter(created__lte=ts)
+                notifications = user_notifications(request.user).filter(created__lte=ts)
                 try:
                     user = User.objects.get(id=request.user.id)
                     for n in notifications:

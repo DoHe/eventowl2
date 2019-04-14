@@ -63,11 +63,12 @@ def add_event(event):
         Notification(event=event_object).save()
 
 
-def user_notifications(user_id):
+def user_notifications(user):
     filtered = Notification.objects.filter(
-        event__artists__subscribers__id=user_id
+        event__city__iexact=user.profile.city,
+        event__artists__subscribers__id=user.id
     ).exclude(
-        read_by__id=user_id
+        read_by__id=user.id
     ).order_by('created')
     return filtered
 
