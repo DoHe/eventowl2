@@ -89,7 +89,7 @@ class Notifications(View):
     def get(self, request):
         return JsonResponse({
             'status': 'ok',
-            'notifications': [n.to_json() for n in user_notifications(request.user.id)]
+            'notifications': [n.to_json() for n in user_notifications(request.user)]
         })
 
     def post(self, request, action=None):
