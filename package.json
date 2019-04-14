@@ -20,23 +20,23 @@
   "author": "DoHe",
   "homepage": "https://github.com/DoHe/eventowl2#readme",
   "devDependencies": {
-    "@babel/core": "7.2.2",
-    "@babel/preset-env": "7.3.1",
+    "@babel/core": "7.4.3",
+    "@babel/preset-env": "7.4.3",
     "babelify": "10.0.0",
     "browserify": "16.2.3",
     "envify": "4.1.0",
-    "eslint": "5.12.1",
+    "eslint": "5.16.0",
     "eslint-config-airbnb": "17.1.0",
     "eslint-config-airbnb-base": "13.1.0",
-    "eslint-plugin-import": "2.15.0",
-    "eslint-plugin-jsx-a11y": "6.2.0",
+    "eslint-plugin-import": "2.17.1",
+    "eslint-plugin-jsx-a11y": "6.2.1",
     "eslint-plugin-react": "7.12.4",
-    "eslint-plugin-vue": "5.1.0",
-    "eslint_d": "7.2.0",
+    "eslint-plugin-vue": "5.2.2",
+    "eslint_d": "7.3.0",
     "node-sass": "4.11.0",
     "uglifyify": "5.0.1",
     "vueify": "9.4.1",
-    "watchify": "3.11.0"
+    "watchify": "3.11.1"
   },
   "browserify": {
     "transform": [
@@ -44,7 +44,7 @@
     ]
   },
   "dependencies": {
-    "bulma": "0.7.1",
+    "bulma": "0.7.4",
     "js-cookie": "^2.2.0",
     "raven-js": "^3.27.0",
     "vue": "^2.5.22"
