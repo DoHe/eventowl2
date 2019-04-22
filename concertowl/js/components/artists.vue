@@ -7,11 +7,12 @@
       :image-url="artist.picture_url"
       :description="artist.description"
       :url="artist.url"
-      @removeArtist="removeArtist" />
+      @removeArtist="removeArtist"
+    />
     <div class="has-text-centered add-button" @click="showAddArtistModal = true">
       <div class="button is-large">
         <span class="icon is-large">
-          <i class="fa icon-plus"/>
+          <i class="fa icon-plus" />
         </span>
       </div>
     </div>
@@ -26,7 +27,8 @@
     <Pagination
       :current-page="page"
       :last-page="Math.ceil(artists.length / perPage)"
-      @changePage="changePage" />
+      @changePage="changePage"
+    />
   </div>
 </template>
 
