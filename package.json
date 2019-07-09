@@ -20,8 +20,8 @@
   "author": "DoHe",
   "homepage": "https://github.com/DoHe/eventowl2#readme",
   "devDependencies": {
-    "@babel/core": "7.5.0",
-    "@babel/preset-env": "7.5.3",
+    "@babel/core": "7.5.4",
+    "@babel/preset-env": "7.5.4",
     "babelify": "10.0.0",
     "browserify": "16.3.0",
     "envify": "4.1.0",
