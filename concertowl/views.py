@@ -30,8 +30,12 @@ class Events(View):
             if not event_format:
                 return HttpResponseForbidden("Access forbidden")
             events = events.filter(artists__subscribers__profile__uuid=user_uuid)
-            city = UserProfile.objects.get(uuid=user_uuid).city
-            events = events.filter(city__iexact=city)
+            try:
+                user = UserProfile.objects.get(uuid=user_uuid)
+                city = user.city
+                events = events.filter(city__iexact=city)
+            except UserProfile.DoesNotExist:
+                pass
         else:
             events = events.filter(artists__subscribers__id=request.user.id)
             events = events.filter(city__iexact=request.user.profile.city)
