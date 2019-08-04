@@ -9,6 +9,7 @@ def unique_events(events):
     return list({
         event['title'].lower() + event['start_time'].split()[0] + event['city'].lower(): event
         for event in events
+        if event.get('title') and event.get('start_time') and event.get('city')
     }.values())
 
 
