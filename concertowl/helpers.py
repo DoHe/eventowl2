@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 import icalendar
+from textdistance import lcsseq
 
 from concertowl.apis.wikipedia import get_wikipedia_description
 from concertowl.models import Artist, Event, Notification
@@ -109,3 +110,55 @@ def split_parts(iterable, num_parts):
     li = list(iterable)
     num_parts = min(num_parts, len(li))
     return [li[i::num_parts] for i in range(num_parts)]
+
+
+def unique_events(events):
+    unique_events = []
+    duplicate_indexes = set()
+    for left_idx, left_event in enumerate(events):
+        if left_idx in duplicate_indexes:
+            continue
+        for right_idx, right_event in enumerate(events):
+            if left_idx == right_idx:
+                continue
+            if is_same_event(left_event, right_event):
+                duplicate_indexes.update({left_idx, right_idx})
+                if right_event.created and (right_event.created > left_event.created):
+                    left_event = right_event
+        unique_events.append(left_event)
+
+    return unique_events
+
+
+def clean(s):
+    return s.lower().strip()
+
+
+def is_same_event(left_event, right_event):
+    left_venue = clean(left_event.venue)
+    right_venue = clean(right_event.venue)
+    venue_similarity = lcsseq.normalized_similarity(left_venue, right_venue)
+    is_similar_venue = venue_similarity > 0.8
+
+    earlier = left_event.start_time - timedelta(hours=2)
+    later = left_event.start_time + timedelta(hours=2)
+    is_similar_time = earlier <= right_event.start_time <= later
+
+    if is_similar_venue and is_similar_time:
+        return True
+
+    is_same_date = left_event.start_time.date() == right_event.start_time.date()
+    if is_same_date and are_similar_artists(left_event.artists.all(), right_event.artists.all()):
+        return True
+
+    return False
+
+
+def are_similar_artists(left_artists, right_artists):
+    for left_artist in left_artists:
+        left_artist = clean(left_artist.name)
+        for right_artist in right_artists:
+            right_artist = clean(right_artist.name)
+            if lcsseq.normalized_similarity(left_artist, right_artist) > 0.8:
+                return True
+    return False

@@ -56,6 +56,7 @@ class Event(models.Model):
     ticket_url = models.URLField()
     picture = models.URLField(default=templatetags.static.static('default_event.jpg'))
     artists = models.ManyToManyField(Artist, related_name='artists')
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         start_time = self.start_time if isinstance(self.start_time, str) else self.start_time.strftime("%Y-%m-%d")

@@ -22,10 +22,22 @@ django-ipware = "*"
 django-widget-tweaks = "*"
 user-agents = "*"
 sentry-sdk = "*"
+textdistance = {extras = ["lcsseq"],version = "*"}
 
 [dev-packages]
 "autopep8" = "*"
 "flake8" = "*"
+pytest = "*"
+pytest-watch = "*"
+pytest-django = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.7"
+
+[scripts]
+test = "pytest concertowl/"
+test_watch = "ptw concertowl/"
+manage = "python manage.py"
+start = "python3 manage.py runserver 0.0.0.0:8000"
+start_cluster = "python3 manage.py qcluster"
