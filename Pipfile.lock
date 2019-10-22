@@ -271,11 +271,11 @@
                 "lcsseq"
             ],
             "hashes": [
-                "sha256:d2d5c2fbdbcce6cbab8aec8d92e4750e83a53d84e5a8a16cd3e46f53c235a719",
-                "sha256:fcee8eac9259355721cbc8fa438afa16cd725cd72cc3a2f9f3463a8334c14b7f"
+                "sha256:0dd4ad6e9a37261f489a190b27fa82f631d4b8e37e4aa766fe2ac3fd613c1e34",
+                "sha256:20155e191e58c653459faa4242adfad4960688e30fc83b576e924f1211e8729f"
             ],
             "index": "pypi",
-            "version": "==4.1.4"
+            "version": "==4.1.5"
         },
         "ua-parser": {
             "hashes": [
