@@ -20,23 +20,24 @@
   "author": "DoHe",
   "homepage": "https://github.com/DoHe/eventowl2#readme",
   "devDependencies": {
-    "@babel/core": "7.6.4",
-    "@babel/preset-env": "7.6.3",
-    "babelify": "10.0.0",
-    "browserify": "16.5.0",
-    "envify": "4.1.0",
-    "eslint": "6.5.1",
-    "eslint-config-airbnb": "17.1.1",
-    "eslint-config-airbnb-base": "14.0.0",
-    "eslint-plugin-import": "2.18.2",
-    "eslint-plugin-jsx-a11y": "6.2.3",
-    "eslint-plugin-react": "7.16.0",
-    "eslint-plugin-vue": "5.2.3",
-    "eslint_d": "8.0.0",
-    "node-sass": "4.13.0",
-    "uglifyify": "5.0.2",
-    "vueify": "9.4.1",
-    "watchify": "3.11.1"
+    "@babel/core": "^7.6.4",
+    "@babel/preset-env": "^7.6.3",
+    "babelify": "^10.0.0",
+    "browserify": "^16.5.0",
+    "envify": "^4.1.0",
+    "eslint": "^6.5.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-react": "^7.16.0",
+    "eslint-plugin-vue": "^5.2.3",
+    "eslint_d": "^8.0.0",
+    "node-sass": "^4.13.0",
+    "uglifyify": "^5.0.2",
+    "vue-template-compiler": "^2.6.10",
+    "vueify": "^9.4.1",
+    "watchify": "^3.11.1"
   },
   "browserify": {
     "transform": [
@@ -44,7 +45,7 @@
     ]
   },
   "dependencies": {
-    "bulma": "0.8.0",
+    "bulma": "^0.8.0",
     "js-cookie": "^2.2.1",
     "raven-js": "^3.27.2",
     "vue": "^2.6.10"
