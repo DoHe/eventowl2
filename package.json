@@ -33,7 +33,7 @@
     "eslint-plugin-react": "^7.18.0",
     "eslint-plugin-vue": "^6.1.2",
     "eslint_d": "^8.0.0",
-    "node-sass": "^4.13.0",
+    "node-sass": "^4.13.1",
     "uglifyify": "^5.0.2",
     "vue-template-compiler": "^2.6.11",
     "vueify": "^9.4.1",
