@@ -82,11 +82,11 @@
         },
         "django-q": {
             "hashes": [
-                "sha256:6a51d4153bfbfe09c0b382fd5687ba10c9695ade9467b73e416272dbb6d77cef",
-                "sha256:cd2b054ae8f95a5cc67ae7533621069e4e879a578b27ce7454179c3145832613"
+                "sha256:835b591ddff588104b5cb495c62b949d2330b01426159144b63919fd491bc808",
+                "sha256:da7dd0ab5caed1080e5d7c28c3594e1211c174eca2aff848ce44dc05093532a5"
             ],
             "index": "pypi",
-            "version": "==1.1.0"
+            "version": "==1.2.0"
         },
         "django-redis": {
             "hashes": [
@@ -368,10 +368,10 @@
         },
         "faker": {
             "hashes": [
-                "sha256:047d4d1791bfb3756264da670d99df13d799bb36e7d88774b1585a82d05dbaec",
-                "sha256:1b1a58961683b30c574520d0c739c4443e0ef6a185c04382e8cc888273dbebed"
+                "sha256:440d68fe0e46c1658b1975b2497abe0c24a7f772e3892253f31e713ffcc48965",
+                "sha256:ee24608768549c2c69e593e9d7a3b53c9498ae735534243ec8390cae5d529f8b"
             ],
-            "version": "==4.0.0"
+            "version": "==4.0.1"
         },
         "flake8": {
             "hashes": [
@@ -510,10 +510,10 @@
         },
         "zipp": {
             "hashes": [
-                "sha256:5c56e330306215cd3553342cfafc73dda2c60792384117893f3a83f8a1209f50",
-                "sha256:d65287feb793213ffe11c0f31b81602be31448f38aeb8ffc2eb286c4f6f6657e"
+                "sha256:12248a63bbdf7548f89cb4c7cda4681e537031eda29c02ea29674bc6854460c2",
+                "sha256:7c0f8e91abc0dc07a5068f315c52cb30c66bfbc581e5b50704c8a2f6ebae794a"
             ],
-            "version": "==2.2.0"
+            "version": "==3.0.0"
         }
     }
 }
