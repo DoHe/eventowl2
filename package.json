@@ -45,7 +45,7 @@
     ]
   },
   "dependencies": {
-    "acorn": "^7.1.0",
+    "acorn": "^7.1.1",
     "bulma": "^0.8.0",
     "js-cookie": "^2.2.1",
     "raven-js": "^3.27.2",
