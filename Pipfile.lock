@@ -32,9 +32,10 @@
         },
         "blessed": {
             "hashes": [
-                "sha256:401e6116c2e34f6c11dd9f5f24e820afd4a4892d2904fcdc8f0b70c618eb099f"
+                "sha256:4fc4b4b41dd58afc41a88e6776e244f3fafe26fd62078e163d2c12eee6f0d662",
+                "sha256:cc38547175ae0a3a3d4e5dcc7e7478a5a6bf0a6b5f4d9c6b2e5eadbe4475cb0e"
             ],
-            "version": "==1.17.2"
+            "version": "==1.17.3"
         },
         "certifi": {
             "hashes": [
@@ -114,11 +115,11 @@
         },
         "icalendar": {
             "hashes": [
-                "sha256:347151cb935f5f2f83d58f6dd8aef8558df69f6c1709f1d2cab2000b36def299",
-                "sha256:45b9bd1b59107b25db688160ebd8d3916b5a8fae65992dae5d7fc0b102a9ab21"
+                "sha256:9bfad29eaa2cc82be4c6aa0bf3bd638906e33b5abdb729c2136374f320ff99c1",
+                "sha256:b8ec6d76a23e7d196af97d64361ab37df3840e3f09ccb3ee66b4ba598c94d693"
             ],
             "index": "pypi",
-            "version": "==4.0.4"
+            "version": "==4.0.5"
         },
         "idna": {
             "hashes": [
