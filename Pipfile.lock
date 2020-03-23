@@ -32,9 +32,10 @@
         },
         "blessed": {
             "hashes": [
-                "sha256:401e6116c2e34f6c11dd9f5f24e820afd4a4892d2904fcdc8f0b70c618eb099f"
+                "sha256:4fc4b4b41dd58afc41a88e6776e244f3fafe26fd62078e163d2c12eee6f0d662",
+                "sha256:cc38547175ae0a3a3d4e5dcc7e7478a5a6bf0a6b5f4d9c6b2e5eadbe4475cb0e"
             ],
-            "version": "==1.17.2"
+            "version": "==1.17.3"
         },
         "certifi": {
             "hashes": [
@@ -245,11 +246,11 @@
         },
         "sentry-sdk": {
             "hashes": [
-                "sha256:480eee754e60bcae983787a9a13bc8f155a111aef199afaa4f289d6a76aa622a",
-                "sha256:a920387dc3ee252a66679d0afecd34479fb6fc52c2bc20763793ed69e5b0dcc0"
+                "sha256:23808d571d2461a4ce3784ec12bbee5bdb8c026c143fe79d36cef8a6d653e71f",
+                "sha256:bb90a4e19c7233a580715fc986cc44be2c48fc10b31e71580a2037e1c94b6950"
             ],
             "index": "pypi",
-            "version": "==0.14.2"
+            "version": "==0.14.3"
         },
         "six": {
             "hashes": [
