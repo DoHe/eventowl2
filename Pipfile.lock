@@ -115,11 +115,11 @@
         },
         "icalendar": {
             "hashes": [
-                "sha256:9bfad29eaa2cc82be4c6aa0bf3bd638906e33b5abdb729c2136374f320ff99c1",
-                "sha256:b8ec6d76a23e7d196af97d64361ab37df3840e3f09ccb3ee66b4ba598c94d693"
+                "sha256:2f400b37353160af259019938e4397bf823f06a67ce9c50a58b95eb563720f00",
+                "sha256:7e6fe7232622abe32d8f54d0936ffcd5a9087198a4c2f1ec1803a7dd9fdd979f"
             ],
             "index": "pypi",
-            "version": "==4.0.5"
+            "version": "==4.0.6"
         },
         "idna": {
             "hashes": [
@@ -130,9 +130,9 @@
         },
         "maxminddb": {
             "hashes": [
-                "sha256:ba276f8232bcfe530f460168447c21b4ebe02aa2304edc11e683acec856f7541"
+                "sha256:f4d28823d9ca23323d113dc7af8db2087aa4f657fafc64ff8f7a8afda871425b"
             ],
-            "version": "==1.5.3"
+            "version": "==1.5.4"
         },
         "maxminddb-geolite2": {
             "hashes": [
