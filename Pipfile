@@ -33,7 +33,7 @@ pytest-django = "*"
 factory-boy = "*"
 
 [requires]
-python_version = "3.7"
+python_version = "3"
 
 [scripts]
 test = "pytest concertowl/"
