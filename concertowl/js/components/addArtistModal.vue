@@ -1,6 +1,6 @@
 <template>
-  <div :class="{'is-active': show}" class="modal" >
-    <div class="modal-background" @click="closeModal"/>
+  <div :class="{'is-active': show}" class="modal">
+    <div class="modal-background" @click="closeModal" />
     <div class="modal-content">
       <div class="box">
         <div class="tabs is-boxed">
@@ -23,20 +23,21 @@
                 class="js-artist-input input"
                 type="text"
                 placeholder="Artist name"
-                @keyup.enter="addArtist">
+                @keyup.enter="addArtist"
+              >
               <span class="icon is-small is-left">
-                <i class="fas icon-music"/>
+                <i class="fas icon-music" />
               </span>
             </div>
-            <p
-              :class="{ 'is-invisible': warning === '' }"
-              class="help is-danger">
+            <p :class="{ 'is-invisible': warning === '' }" class="help is-danger">
               {{ warning }}
             </p>
           </div>
           <div class="field">
             <div class="control">
-              <button class="button is-link" @click="addArtist">Add</button>
+              <button class="button is-link" @click="addArtist">
+                Add
+              </button>
             </div>
           </div>
         </div>
@@ -45,25 +46,27 @@
           <button
             :class="{ 'is-loading': importing }"
             class="button is-link"
-            @click="importFromSpotify">
+            @click="importFromSpotify"
+          >
             Import
           </button>
           <p
             :class="{ 'is-invisible': !importing }"
-            class="help is-warning">
+            class="help is-warning"
+          >
             The import is running in the background. Feel free to close this window.
           </p>
         </div>
       </div>
     </div>
-    <button class="modal-close is-large" aria-label="close" @click="closeModal"/>
+    <button class="modal-close is-large" aria-label="close" @click="closeModal" />
   </div>
 </template>
 
 <script>
-const { callBackend } = require('../helpers');
 const url = require('url');
 const querystring = require('querystring');
+const { callBackend } = require('../helpers');
 
 module.exports = {
   props: ['artists', 'show', 'importRunning'],
@@ -104,14 +107,14 @@ module.exports = {
         return;
       }
       const artistName = this.artistName.toLowerCase();
-      if (this.artists.some(artist => artistName === artist.name)) {
+      if (this.artists.some((artist) => artistName === artist.name)) {
         this.warning = 'You already follow this artist!';
         return;
       }
       this.$emit('haveArtist', artistName);
       this.closeModal();
       callBackend(`/artists/${artistName}/`, { method: 'post' })
-        .then(response => response.json())
+        .then((response) => response.json())
         .then((artistInfo) => {
           this.$emit('updateArtistInfo', artistInfo);
         });
@@ -123,9 +126,14 @@ module.exports = {
         client_id: process.env.SPOTIFY_ID,
         response_type: 'code',
         redirect_uri: process.env.SPOTIFY_URL,
-        scope: 'user-library-read user-follow-read playlist-read-private playlist-read-collaborative',
+        scope:
+          'user-library-read user-follow-read playlist-read-private playlist-read-collaborative',
       });
-      const spotifyWindow = window.open(url.format(spotifyUrl), '', 'width=500,height=500');
+      const spotifyWindow = window.open(
+        url.format(spotifyUrl),
+        '',
+        'width=500,height=500',
+      );
       spotifyWindow.onunload = () => {
         window.setTimeout(() => {
           spotifyWindow.close();

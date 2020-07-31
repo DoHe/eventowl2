@@ -3,13 +3,15 @@
     <a
       :disabled="currentPage === 1"
       class="pagination-previous"
-      @click="$emit('changePage', currentPage - 1)">
+      @click="$emit('changePage', currentPage - 1)"
+    >
       Previous
     </a>
     <a
       :disabled="currentPage === lastPage"
       class="pagination-next"
-      @click="$emit('changePage', currentPage + 1)">
+      @click="$emit('changePage', currentPage + 1)"
+    >
       Next page
     </a>
     <ul class="pagination-list">
@@ -18,7 +20,8 @@
           :aria-label="`Goto page ${i}`"
           :class="{'is-current': i === currentPage}"
           class="pagination-link"
-          @click="$emit('changePage', i)">
+          @click="$emit('changePage', i)"
+        >
           {{ i }}
         </a>
       </li>

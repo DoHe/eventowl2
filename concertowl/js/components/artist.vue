@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="box" @click="showDescription = !showDescription">
-      <div class="delete is-pulled-right" @click="remove"/>
+      <div class="delete is-pulled-right" @click="remove" />
       <article class="media">
         <figure class="media-left">
           <p class="image is-96x96 is-square">
@@ -27,8 +27,9 @@
     </div>
     <div
       :class="{'is-active': showDescription}"
-      class="modal is-hidden-tablet">
-      <div class="modal-background" @click="showDescription=false"/>
+      class="modal is-hidden-tablet"
+    >
+      <div class="modal-background" @click="showDescription=false" />
       <div class="modal-content">
         <div class="box">
           <div v-if="description">

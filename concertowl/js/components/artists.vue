@@ -71,7 +71,7 @@ module.exports = {
       });
     },
     removeArtist(artistName) {
-      this.artistsData = this.artistsData.filter(artist => artist.name !== artistName);
+      this.artistsData = this.artistsData.filter((artist) => artist.name !== artistName);
     },
     changePage(page) {
       this.page = page;

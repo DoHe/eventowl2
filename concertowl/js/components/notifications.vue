@@ -7,7 +7,7 @@
         </span>
         <span class="tag is-rounded is-white">
           <span class="icon">
-            <i class="fas icon-bell-alt"/>
+            <i class="fas icon-bell-alt" />
           </span>
         </span>
       </div>
@@ -17,7 +17,8 @@
         v-for="notification in dropdownData"
         :key="(notification.title || notification.artists) + notification.start_time"
         :href="`/events/${notification.event_id}`"
-        class="dropdown-item">
+        class="dropdown-item"
+      >
         <p class="has-text-weight-bold">{{ notification.title }}</p>
         <p>{{ localizedTime(notification.start_time) }}</p>
       </a>
@@ -47,7 +48,7 @@ module.exports = {
     },
     poll() {
       callBackend('/notifications/')
-        .then(data => data.json())
+        .then((data) => data.json())
         .then((json) => { this.notificationsData = json.notifications; });
     },
     activeClicked() {
