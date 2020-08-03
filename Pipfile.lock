@@ -278,6 +278,9 @@
             "version": "==0.3.1"
         },
         "textdistance": {
+            "extras": [
+                "lcsseq"
+            ],
             "hashes": [
                 "sha256:61ddcdd9a78da99eff11dc1219d444f72915212cf36947de3266a356f5e934f7",
                 "sha256:6d2a398815aeed453cfb38a3b62da74e33fa6a5f4e42845fd1d2c9611836befd"
@@ -333,10 +336,10 @@
         },
         "autopep8": {
             "hashes": [
-                "sha256:60fd8c4341bab59963dafd5d2a566e94f547e660b9b396f772afe67d8481dbf0"
+                "sha256:d21d3901cb0da6ebd1e83fc9b0dfbde8b46afc2ede4fe32fbda0c7c6118ca094"
             ],
             "index": "pypi",
-            "version": "==1.5.3"
+            "version": "==1.5.4"
         },
         "colorama": {
             "hashes": [
