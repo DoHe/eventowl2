@@ -69,10 +69,10 @@
         },
         "django-ipware": {
             "hashes": [
-                "sha256:161605eb011439550dd3ee496d0e999720b13f01952be25ea9e88982fbe48e83"
+                "sha256:73a640a5bff00aa7503a35e92e462001cfabb07d73d649c262f117423beee953"
             ],
             "index": "pypi",
-            "version": "==3.0.0"
+            "version": "==3.0.1"
         },
         "django-picklefield": {
             "hashes": [
