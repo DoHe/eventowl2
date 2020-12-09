@@ -21,7 +21,7 @@
   "homepage": "https://github.com/DoHe/eventowl2#readme",
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-env": "^7.12.10",
     "babelify": "^10.0.0",
     "browserify": "^17.0.0",
     "envify": "^4.1.0",
