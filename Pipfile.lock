@@ -83,11 +83,11 @@
         },
         "django-q": {
             "hashes": [
-                "sha256:8871c602e2c7e892fbedc271d5b91c4a96803b689c3ee2f15464931f99f4e32b",
-                "sha256:bebfbd0699f609997467dfada2db9f7a30a594f202359e543baff906d1ff20b6"
+                "sha256:61ff587f268324b364c9aaeee92432e2c381d4480481ce8fc18a390ad357014a",
+                "sha256:901213e5515c6fbea63d2c57ee9e48f1012df1e958c515d2ba206118d829a3bd"
             ],
             "index": "pypi",
-            "version": "==1.3.5"
+            "version": "==1.3.6"
         },
         "django-redis": {
             "hashes": [
