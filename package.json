@@ -47,7 +47,7 @@
   "dependencies": {
     "acorn": "^7.4.0",
     "bulma": "^0.9.3",
-    "js-cookie": "^2.2.1",
+    "js-cookie": "^3.0.0",
     "raven-js": "^3.27.2",
     "vue": "^2.6.12"
   },
